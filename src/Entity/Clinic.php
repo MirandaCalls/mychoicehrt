@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class Clinic
 {
-    public const DATASOURCE__ERIN_REED = 'erinReed';
-    public const DATASOURCE__MANUAL_ENTRY = 'manualEntry';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
