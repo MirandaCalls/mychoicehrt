@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae13d12a21382eceed9b7b06518c440a",
+    "content-hash": "c88cc88a9d1de491f16497ff3930420d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1742,6 +1742,63 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "simpod/doctrine-utcdatetime",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simPod/doctrine-utcdatetime.git",
+                "reference": "c57a8a0c411405f13e9dff1de280b23968a01425"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simPod/doctrine-utcdatetime/zipball/c57a8a0c411405f13e9dff1de280b23968a01425",
+                "reference": "c57a8a0c411405f13e9dff1de280b23968a01425",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.6 || ^3",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^9.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^0.12.53",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "phpstan/phpstan-strict-rules": "^0.12.5",
+                "phpunit/phpunit": "^9.5",
+                "psalm/plugin-phpunit": "^0.16.1",
+                "vimeo/psalm": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SimPod\\DoctrineUtcDateTime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Podlipsky",
+                    "email": "simon@podlipsky.net"
+                }
+            ],
+            "description": "Doctrine UTC DateTime",
+            "support": {
+                "issues": "https://github.com/simPod/doctrine-utcdatetime/issues",
+                "source": "https://github.com/simPod/doctrine-utcdatetime/tree/0.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/simPod",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-12-11T13:06:50+00:00"
         },
         {
             "name": "symfony/cache",
