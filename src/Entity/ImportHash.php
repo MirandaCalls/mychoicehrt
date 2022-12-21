@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImportHashRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ImportHash
 {
     #[ORM\Id]
@@ -57,11 +58,16 @@ class ImportHash
         return $this->importedOn;
     }
 
-    #[ORM\PrePersist]
     public function setImportedOn(\DateTimeInterface $importedOn): self
     {
         $this->importedOn = $importedOn;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function onRecordCreate()
+    {
+        $this->importedOn = new \DateTime();
     }
 }

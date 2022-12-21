@@ -12,6 +12,7 @@ interface DataSourceInterface
 
     public function __construct(HttpClientInterface $httpClient);
     public function getType(): string;
+    /* @throws DataSourceException */
     public function fetchClinics(): array;
     public function hash(Clinic $clinic): string;
 }

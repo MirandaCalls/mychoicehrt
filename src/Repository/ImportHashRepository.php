@@ -39,28 +39,13 @@ class ImportHashRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return ImportHash[] Returns an array of ImportHash objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?ImportHash
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByHash($hashValue): ?ImportHash
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.hash = :hashValue')
+            ->setParameter('hashValue', $hashValue)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

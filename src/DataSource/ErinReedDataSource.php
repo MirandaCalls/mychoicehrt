@@ -21,6 +21,9 @@ class ErinReedDataSource implements DataSourceInterface
         return self::DATASOURCE__ERIN_REED;
     }
 
+    /**
+     * @throws DataSourceException
+     */
     public function fetchClinics(): array
     {
         $kml = $this->loadGoogleMapsKml();
@@ -34,37 +37,45 @@ class ErinReedDataSource implements DataSourceInterface
             $clinic->setDescription($record['description']);
             $clinic->setLatitude($coords[1]);
             $clinic->setLongitude($coords[0]);
+            $clinic->setDataSource($this->getType());
+            $clinic->setPublished(false);
             $clinics[] = $clinic;
         }
 
         return $clinics;
     }
 
+    /**
+     * @throws DataSourceException
+     */
     private function loadGoogleMapsKml(): string
     {
         try {
             $res = $this->httpClient->request( 'GET', self::MAPS_URL );
             $data = $res->getContent();
-        } catch (\Exception $e) {
-            throw new DataSourceException('HTTP request to fetch clinics failed.');
+        } catch (\Throwable) {
+            throw new DataSourceException('HTTP request to fetch clinics failed.', $this->getType());
         }
 
         if ($data === '') {
-            throw new DataSourceException('Missing clinics KML in response.');
+            throw new DataSourceException('Missing clinics KML in response.', $this->getType());
         }
 
         return $data;
     }
 
+    /**
+     * @throws DataSourceException
+     */
     private function processKml(string $kml): array
     {
         $rawRecords = [];
         $document = simplexml_load_string($kml);
         foreach ($document->Document->Placemark as $location) {
             if (empty($location->name)) {
-                throw new \Exception('Missing clinic attribute in kml data: name');
+                throw new DataSourceException('Missing clinic attribute in kml data: name', $this->getType());
             } elseif (empty($location->Point->coordinates)) {
-                throw new \Exception('Missing attribute in kml data: coordinates');
+                throw new DataSourceException('Missing attribute in kml data: coordinates', $this->getType());
             }
 
             $description = '';

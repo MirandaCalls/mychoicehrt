@@ -122,7 +122,6 @@ class Clinic
         return $this->importedOn;
     }
 
-    #[ORM\PrePersist]
     public function setImportedOn(\DateTimeInterface $importedOn): self
     {
         $this->importedOn = $importedOn;
@@ -135,11 +134,24 @@ class Clinic
         return $this->updatedOn;
     }
 
-    #[ORM\PreUpdate]
     public function setUpdatedOn(\DateTimeInterface $updatedOn): self
     {
         $this->updatedOn = $updatedOn;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function onRecordCreate()
+    {
+        $now = new \DateTime();
+        $this->importedOn = $now;
+        $this->updatedOn = $now;
+    }
+
+    #[ORM\PreUpdate]
+    public function onRecordUpdate()
+    {
+        $this->updatedOn = new \DateTime();
     }
 }
