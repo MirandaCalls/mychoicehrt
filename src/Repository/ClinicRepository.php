@@ -39,28 +39,25 @@ class ClinicRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Clinic[] Returns an array of Clinic objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Clinic[]
+     */
+    public function filterAllWithCallable(callable $filterFunc): array
+    {
+        $iterable = $this->createQueryBuilder('c')
+            ->getQuery()
+            ->toIterable();
 
-//    public function findOneBySomeField($value): ?Clinic
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $filtered = [];
+        foreach ($iterable as $clinic) {
+            if ($filterFunc($clinic)) {
+                $filtered[] = $clinic;
+            }
+
+            $this->getEntityManager()->detach($clinic);
+        }
+
+        return $filtered;
+    }
+
 }
