@@ -7,6 +7,7 @@ use App\DataSource\DataSourceInterface;
 use App\DataSource\ErinReedDataSource;
 use App\Entity\Clinic;
 use App\Entity\ImportHash;
+use App\Message\FindDuplicatesMessage;
 use App\Repository\ClinicRepository;
 use App\Repository\ImportHashRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand(
@@ -25,6 +27,7 @@ class ClinicsImportCommand extends Command
     private HttpClientInterface $httpClient;
     private ClinicRepository $clinics;
     private ImportHashRepository $imports;
+    private MessageBusInterface $bus;
 
     private array $dataSources = [
         ErinReedDataSource::class
@@ -34,10 +37,12 @@ class ClinicsImportCommand extends Command
         HttpClientInterface $httpClient,
         ClinicRepository $clinics,
         ImportHashRepository $imports,
+        MessageBusInterface $bus,
     ) {
         $this->httpClient = $httpClient;
         $this->clinics = $clinics;
         $this->imports = $imports;
+        $this->bus = $bus;
         parent::__construct();
     }
 
@@ -47,6 +52,7 @@ class ClinicsImportCommand extends Command
         $io->text('Sync started');
 
         $clinicsAddedCount = 0;
+        $duplicateJobs = [];
         foreach ($this->dataSources as $source) {
             /* @var DataSourceInterface $source */
             $source = new $source($this->httpClient);
@@ -80,10 +86,15 @@ class ClinicsImportCommand extends Command
                 $this->imports->save($import, true);
 
                 $clinicsAddedCount++;
+                $duplicateJobs[] = new FindDuplicatesMessage($new->getId());
             }
         }
 
         if ($clinicsAddedCount > 0) {
+            foreach ($duplicateJobs as $message) {
+                $this->bus->dispatch($message);
+            }
+
             $io->success(sprintf('Imported %d clinics', $clinicsAddedCount));
         } else {
             $io->success('Sync finished, no clinics imported');
