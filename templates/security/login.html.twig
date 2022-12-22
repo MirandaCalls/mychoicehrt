@@ -10,14 +10,15 @@
     <div class="login-hover card">
         <div class="card-body p-4">
             <form method="post">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-
                 <div class="text-center">
                     <img src="{{ asset('images/logo.png') }}" class="logo rounded img-thumbnail text-center mb-2" alt="mychoicehrt logo">
                     <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
                 </div>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
                 <label for="inputUsername">Username</label>
                 <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control mb-2" autocomplete="username" required autofocus>
                 <label for="inputPassword">Password</label>
