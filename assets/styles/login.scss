@@ -1,5 +1,17 @@
 @import "./base";
 
 body {
-    background-color: lightgray;
+    display: flex;
+    background: url('../../public/images/login-background.jpg') no-repeat center;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 150px;
+}
+
+.login-hover {
+    min-width: 400px;
 }
