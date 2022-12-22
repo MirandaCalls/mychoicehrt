@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
+        "easycorp/easyadmin-bundle": "^4.5",
         "mjaschen/phpgeo": "^4.2",
         "oefenweb/damerau-levenshtein": "^3.0",
         "simpod/doctrine-utcdatetime": "^0.2.0",
