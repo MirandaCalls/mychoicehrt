@@ -52,9 +52,9 @@ class ClinicRepository extends ServiceEntityRepository
         foreach ($iterable as $clinic) {
             if ($filterFunc($clinic)) {
                 $filtered[] = $clinic;
+            } else {
+                $this->getEntityManager()->detach($clinic);
             }
-
-            $this->getEntityManager()->detach($clinic);
         }
 
         return $filtered;

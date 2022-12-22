@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Clinic;
 use App\Entity\DuplicateLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,20 @@ class DuplicateLinkRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findForClinicPair(Clinic $a, Clinic $b): ?DuplicateLink
+    {
+        return $this->createQueryBuilder('d')
+            ->orWhere('d.clinicA = :clinicA AND d.clinicB = :clinicB')
+            ->orWhere('d.clinicA = :clinicB AND d.clinicB = :clinicA')
+            ->setParameters([
+                'clinicA' => $a,
+                'clinicB' => $b,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
 }
