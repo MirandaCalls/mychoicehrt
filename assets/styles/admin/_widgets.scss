@@ -82,3 +82,7 @@ $widget-padding: 10px;
 .widget-action__action-text:hover {
   background-color: rgba(0, 0, 0, 0.30);
 }
+
+.widget-action.bg-success > .widget-action__action-text:hover {
+  background-color: #00000038;
+}

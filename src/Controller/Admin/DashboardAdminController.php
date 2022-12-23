@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Clinic;
 use App\Repository\ClinicRepository;
+use App\Repository\DuplicateLinkRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -13,10 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardAdminController extends AbstractDashboardController
 {
     private ClinicRepository $clinics;
+    private DuplicateLinkRepository $duplicates;
 
-    public function __construct(ClinicRepository $clinics)
-    {
+    public function __construct(
+        ClinicRepository $clinics,
+        DuplicateLinkRepository $duplicates,
+    ) {
         $this->clinics = $clinics;
+        $this->duplicates = $duplicates;
     }
 
     #[Route('/admin', name: 'admin')]
@@ -25,11 +30,13 @@ class DashboardAdminController extends AbstractDashboardController
         $clinicsCount = $this->clinics->countClinics();
         $recentClinicsCount = $this->clinics->countClinics(recent: true);
         $unpublishedCount = $this->clinics->countClinics(published: false);
+        $duplicatesCount = $this->duplicates->countDuplicates();
 
         return $this->render('admin/dashboard.html.twig', [
             'clinicsCount' => $clinicsCount,
             'recentClinicsCount' => $recentClinicsCount,
             'unpublishedCount' => $unpublishedCount,
+            'duplicatesCount' => $duplicatesCount,
         ]);
     }
 

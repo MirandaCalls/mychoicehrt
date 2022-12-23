@@ -51,6 +51,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-4">
+                <div class="widget-action {{ duplicatesCount > 0 ? 'bg-warning' : 'bg-success' }}">
+                    <div class="widget-action__context">
+                        <div class="widget-action__details">
+                            <div class="widget-action__value">{{ duplicatesCount }}</div>
+                            <div class="widget-action__title">Potential duplicates</div>
+                        </div>
+                        <div class="widget-action__icon">
+                            <i class="fa-regular fa-copy"></i>
+                        </div>
+                    </div>
+                    <div class="widget-action__action-text">
+                        {% if duplicatesCount > 0 %}
+                            <a href="#">
+                                Resolve duplicates
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        {% else %}
+                            <p>No action required</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

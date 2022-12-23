@@ -54,4 +54,13 @@ class DuplicateLinkRepository extends ServiceEntityRepository
         ;
     }
 
+    public function countDuplicates(): int
+    {
+        return $this->createQueryBuilder('d')
+            ->select('count(d.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
 }
