@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Clinic;
+use App\Repository\ClinicRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -11,10 +12,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardAdminController extends AbstractDashboardController
 {
+    private ClinicRepository $clinics;
+
+    public function __construct(ClinicRepository $clinics)
+    {
+        $this->clinics = $clinics;
+    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        $clinicsCount = $this->clinics->countClinics();
+        $recentClinicsCount = $this->clinics->countClinics(recent: true);
+
+        return $this->render('admin/dashboard.html.twig', [
+            'clinicsCount' => $clinicsCount,
+            'recentClinicsCount' => $recentClinicsCount,
+        ]);
     }
 
     public function configureDashboard(): Dashboard

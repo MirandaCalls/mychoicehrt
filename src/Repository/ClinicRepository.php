@@ -60,4 +60,20 @@ class ClinicRepository extends ServiceEntityRepository
         return $filtered;
     }
 
+    public function countClinics(bool $recent = false): Int
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('count(c.id)');
+
+        if ($recent) {
+            $query->andWhere('c.importedOn >= :sevenDaysPast')
+                ->setParameter('sevenDaysPast', (new \DateTime())->sub(new \DateInterval('P7D')))
+            ;
+        }
+
+        return $query
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
