@@ -18,7 +18,7 @@
             <div class="col-sm-4">
                 <div class="widget-info">
                     <div class="widget-info__icon bg-info">
-                        <i class="fa-solid fa-hospital"></i>
+                        <i class="fa-solid fa-download"></i>
                     </div>
                     <div class="widget-info__details">
                         <p class="widget-info__title">New Clinics</p>
@@ -29,21 +29,25 @@
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <div class="widget-action bg-success">
+                <div class="widget-action {{ unpublishedCount > 0 ? 'bg-warning' : 'bg-success' }}">
                     <div class="widget-action__context">
                         <div class="widget-action__details">
-                            <div class="widget-action__value">20</div>
-                            <div class="widget-action__title">Scaly Ratio</div>
+                            <div class="widget-action__value">{{ unpublishedCount }}</div>
+                            <div class="widget-action__title">Unpublished clinics</div>
                         </div>
                         <div class="widget-action__icon">
-                            <i class="fa-solid fa-fish"></i>
+                            <i class="fa-solid fa-magnifying-glass-location"></i>
                         </div>
                     </div>
                     <div class="widget-action__action-text">
-                        <a href="#">
-                            Pet dat fish!
-                            <i class="fas fa-arrow-circle-right"></i>
-                        </a>
+                        {% if unpublishedCount > 0 %}
+                            <a href="/admin?crudAction=index&crudControllerFqcn=App\Controller\Admin\ClinicCrudController&filters[published][comparison]=%3D&filters[published][value]=1">
+                                Review clinics
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        {% else %}
+                            <p>No action required</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

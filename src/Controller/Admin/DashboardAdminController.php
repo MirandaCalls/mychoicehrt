@@ -24,10 +24,12 @@ class DashboardAdminController extends AbstractDashboardController
     {
         $clinicsCount = $this->clinics->countClinics();
         $recentClinicsCount = $this->clinics->countClinics(recent: true);
+        $unpublishedCount = $this->clinics->countClinics(published: false);
 
         return $this->render('admin/dashboard.html.twig', [
             'clinicsCount' => $clinicsCount,
             'recentClinicsCount' => $recentClinicsCount,
+            'unpublishedCount' => $unpublishedCount,
         ]);
     }
 

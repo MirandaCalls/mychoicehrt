@@ -4,12 +4,15 @@ namespace App\Controller\Admin;
 
 use App\Entity\Clinic;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 
 class ClinicCrudController extends AbstractCrudController
 {
@@ -18,11 +21,22 @@ class ClinicCrudController extends AbstractCrudController
         return Clinic::class;
     }
 
+
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setEntityLabelInPlural('Clinics')
+            ->setTimezone('America/Chicago')
         ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(ChoiceFilter::new('published')->setChoices([
+                'No' => false,
+                'Yes' => true
+            ]));
     }
 
     public function configureFields(string $pageName): iterable
@@ -31,6 +45,8 @@ class ClinicCrudController extends AbstractCrudController
         $description = TextareaField::new('description');
         $latitude = NumberField::new('latitude')->setColumns(5);
         $longitude = NumberField::new('longitude')->setColumns(5);
+        $published = BooleanField::new('published')
+            ->renderAsSwitch();
         $dataSource = TextField::new('dataSource');
         $updatedOn = DateTimeField::new('updatedOn')->setFormTypeOptions([
             'html5' => true,
@@ -42,6 +58,7 @@ class ClinicCrudController extends AbstractCrudController
         ]);
 
         if (Crud::PAGE_EDIT === $pageName) {
+            yield $published;
             yield FormField::addPanel('Details');
             yield $name;
             yield $description;
@@ -53,6 +70,7 @@ class ClinicCrudController extends AbstractCrudController
             yield $updatedOn->setFormTypeOption('disabled', true);
             yield $importedOn->setFormTypeOption('disabled', true);
         } elseif (Crud::PAGE_NEW === $pageName) {
+            yield $published;
             yield $name;
             yield $description;
             yield $latitude;
@@ -60,6 +78,7 @@ class ClinicCrudController extends AbstractCrudController
         } else {
             yield $name;
             yield $dataSource;
+            yield $published;
             yield $updatedOn;
             yield $importedOn;
         }
