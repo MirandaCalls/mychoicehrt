@@ -1,5 +1,52 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block main %}
-    <p>TODO</p>
+    {{ encore_entry_link_tags('admin_dashboard') }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="widget-info">
+                    <div class="widget-info__icon bg-info">
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+                    <div class="widget-info__details">
+                        <p class="widget-info__title">Total Clinics</p>
+                        <p class="widget-info__value">9000</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="widget-info">
+                    <div class="widget-info__icon bg-info">
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+                    <div class="widget-info__details">
+                        <p class="widget-info__title">New Clinics</p>
+                        <p class="widget-info__value">23</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="widget-action bg-warning">
+                    <div class="widget-action__context">
+                        <div class="widget-action__details">
+                            <div class="widget-action__value">20</div>
+                            <div class="widget-action__title">Scaly Ratio</div>
+                        </div>
+                        <div class="widget-action__icon">
+                            <i class="fa-solid fa-fish"></i>
+                        </div>
+                    </div>
+                    <div class="widget-action__action-text">
+                        <a href="#">
+                            Pet dat fish!
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

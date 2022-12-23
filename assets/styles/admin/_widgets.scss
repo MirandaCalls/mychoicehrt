@@ -1,0 +1,84 @@
+@import "../_variables";
+
+$widget-padding: 10px;
+
+.widget-info {
+  border-radius: $rounded-corner-radius;
+  box-shadow: 0 .5rem 1rem rgba(black, .15);
+  display: flex;
+  flex-direction: row;
+  padding: $widget-padding;
+  margin-bottom: 20px;
+}
+
+.widget-info__icon {
+  width: 70px;
+  height: 70px;
+  border-radius: $rounded-corner-radius;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.875rem;
+  color: white;
+}
+
+.widget-info__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 10px;
+}
+
+.widget-info__title, .widget-info__value {
+  margin: 0;
+  padding: 0;
+}
+
+.widget-info__value {
+  font-weight: bold;
+}
+
+.widget-action {
+  border-radius: $rounded-corner-radius;
+  box-shadow: 0 .5rem 1rem rgba(black, .15);
+}
+
+.widget-action__context {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: $widget-padding;
+}
+
+.widget-action__title, .widget-action__value {
+  color: white;
+}
+
+.widget-action__value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.widget-action__icon {
+  font-size: 3rem;
+  color: rgba(0,0,0,.15);
+}
+
+.widget-action__action-text {
+  border-bottom-left-radius: $rounded-corner-radius;
+  border-bottom-right-radius: $rounded-corner-radius;
+  text-align: center;
+  background-color: #00000038;
+
+  p, a {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    color: white;
+  }
+}
+
+.widget-action__action-text:hover {
+  background-color: rgba(0, 0, 0, 0.30);
+}
