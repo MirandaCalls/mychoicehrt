@@ -154,4 +154,9 @@ class Clinic
     {
         $this->updatedOn = new \DateTime();
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

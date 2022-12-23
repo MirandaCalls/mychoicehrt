@@ -75,12 +75,25 @@ class ClinicCrudController extends AbstractCrudController
             yield $description;
             yield $latitude;
             yield $longitude;
-        } else {
-            yield $name;
-            yield $dataSource;
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
             yield $published;
+            yield FormField::addPanel('Details');
+            yield $name;
+            yield $description;
+            yield $latitude;
+            yield $longitude;
+
+            yield FormField::addPanel('Metadata');
+            yield $dataSource;
             yield $updatedOn;
             yield $importedOn;
+        } else {
+            // list view
+            yield $name;
+            yield $dataSource;
+            yield $updatedOn;
+            yield $importedOn;
+            yield $published;
         }
     }
 }

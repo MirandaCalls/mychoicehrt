@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Clinic;
+use App\Entity\DuplicateLink;
 use App\Repository\ClinicRepository;
 use App\Repository\DuplicateLinkRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -54,5 +55,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section();
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Clinics', 'fas fa-hospital', Clinic::class);
+
+        $duplicatesCount = $this->duplicates->countDuplicates();
+        if ($duplicatesCount > 0) {
+            yield MenuItem::linkToCrud('Duplicates', 'fa-regular fa-copy', DuplicateLink::class);
+        }
     }
 }
