@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\DuplicateLink;
 use App\Repository\ClinicRepository;
-use App\Repository\DuplicateLinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -25,18 +24,15 @@ class DuplicateLinkCrudController extends AbstractCrudController
 {
     private AdminUrlGenerator $adminUrlGenerator;
     private ClinicRepository $clinics;
-    private DuplicateLinkRepository $duplicates;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         AdminUrlGenerator $adminUrlGenerator,
         ClinicRepository $clinics,
-        DuplicateLinkRepository $duplicates,
         EntityManagerInterface $entityManager,
     ) {
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->clinics = $clinics;
-        $this->duplicates = $duplicates;
         $this->entityManager = $entityManager;
     }
 
@@ -47,8 +43,8 @@ class DuplicateLinkCrudController extends AbstractCrudController
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        return $this->duplicates->createQueryBuilder('d')
-            ->andWhere('d.dismissed = :notDismissed')
+        return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
+            ->andWhere('entity.dismissed = :notDismissed')
             ->setParameter('notDismissed', false)
         ;
     }
@@ -129,7 +125,8 @@ class DuplicateLinkCrudController extends AbstractCrudController
             ->setAction(Action::INDEX)
             ->unset('entityId')
             ->setReferrer('')
-            ->generateUrl();
+            ->generateUrl()
+        ;
 
         return $this->redirect($duplicatesIndex);
     }
