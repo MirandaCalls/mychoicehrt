@@ -54,11 +54,20 @@ class DuplicateLinkRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countDuplicates(): int
+    public function countDuplicates(?bool $dismissed = false): int
     {
-        return $this->createQueryBuilder('d')
+        $query = $this->createQueryBuilder('d')
             ->select('count(d.id)')
-            ->getQuery()
+        ;
+
+        if ($dismissed !== null) {
+            $query
+                ->andWhere('d.dismissed = :dismissed')
+                ->setParameter('dismissed', $dismissed)
+            ;
+        }
+
+        return $query->getQuery()
             ->getSingleScalarResult()
         ;
     }
