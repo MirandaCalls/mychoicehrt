@@ -40,6 +40,21 @@ class DuplicateLinkRepository extends ServiceEntityRepository
         }
     }
 
+    public function deleteForClinicId(int $clinicId): void
+    {
+        $relatedLinks = $this->createQueryBuilder('d')
+            ->orWhere('d.clinicA = :clinicId')
+            ->orWhere('d.clinicB = :clinicId')
+            ->setParameter('clinicId', $clinicId)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        foreach ($relatedLinks as $link) {
+            $this->remove($link);
+        }
+    }
+
     public function findForClinicPair(Clinic $a, Clinic $b): ?DuplicateLink
     {
         return $this->createQueryBuilder('d')

@@ -99,9 +99,8 @@ class DuplicateLinkCrudController extends AbstractCrudController
     {
         /* @var DuplicateLink $duplicate */
         $duplicate = $context->getEntity()->getInstance();
-        $this->duplicates->remove($duplicate);
-        $this->clinics->remove($duplicate->getClinicB());
-        $this->entityManager->flush();
+        $clinicToDelete = $duplicate->getClinicB();
+        $this->clinics->remove($clinicToDelete, true);
         return $this->redirectToIndex();
     }
 
@@ -109,9 +108,8 @@ class DuplicateLinkCrudController extends AbstractCrudController
     {
         /* @var DuplicateLink $duplicate */
         $duplicate = $context->getEntity()->getInstance();
-        $this->duplicates->remove($duplicate);
-        $this->clinics->remove($duplicate->getClinicA());
-        $this->entityManager->flush();
+        $clinicToDelete = $duplicate->getClinicA();
+        $this->clinics->remove($clinicToDelete, true);
         return $this->redirectToIndex();
     }
 
