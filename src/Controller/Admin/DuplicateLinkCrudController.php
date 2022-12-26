@@ -56,6 +56,7 @@ class DuplicateLinkCrudController extends AbstractCrudController
             ->linkToCrudAction('resolve')
         ;
         $dismissDuplicate = Action::new('dismissDuplicate', 'Dismiss')
+            /* @see self::dismissDuplicate() */
             ->linkToCrudAction('dismissDuplicate')
         ;
 
