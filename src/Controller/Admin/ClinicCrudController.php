@@ -3,8 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Clinic;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -13,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ClinicCrudController extends AbstractCrudController
 {
@@ -21,6 +25,15 @@ class ClinicCrudController extends AbstractCrudController
         return Clinic::class;
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        $openMapsAction = Action::new('openMaps', 'Open Map')
+            /* @see self::redirectToOpenMaps() */
+            ->linkToCrudAction('redirectToOpenMaps')
+        ;
+
+        return $actions->add(Action::EDIT, $openMapsAction);
+    }
 
     public function configureCrud(Crud $crud): Crud
     {
@@ -95,5 +108,17 @@ class ClinicCrudController extends AbstractCrudController
             yield $importedOn;
             yield $published;
         }
+    }
+
+    public function redirectToOpenMaps(AdminContext $context): RedirectResponse
+    {
+        /* @var ?Clinic $clinic */
+        $clinic = $context->getEntity()->getInstance();
+        if (!$clinic) {
+            return $this->redirect($context->getReferrer());
+        }
+
+        $openMapsUrl = 'https://www.openstreetmap.org/?mlat=' . $clinic->getLatitude() . '&mlon=' . $clinic->getLongitude();
+        return $this->redirect($openMapsUrl);
     }
 }
