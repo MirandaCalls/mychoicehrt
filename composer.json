@@ -23,7 +23,9 @@
         "symfony/http-client": "6.2.*",
         "symfony/runtime": "6.2.*",
         "symfony/webpack-encore-bundle": "^1.16",
-        "symfony/yaml": "6.2.*"
+        "symfony/yaml": "6.2.*",
+        "twig/extra-bundle": "^3.4",
+        "twig/intl-extra": "^3.4"
     },
     "config": {
         "allow-plugins": {

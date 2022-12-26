@@ -90,25 +90,43 @@ class DuplicateLinkCrudController extends AbstractCrudController
 
     public function resolve(AdminContext $context): Response
     {
-        return $this->render('admin/duplicate/resolve.html.twig');
-    }
-
-    public function keepClinicA(AdminContext $context): RedirectResponse
-    {
-        /* @var DuplicateLink $duplicate */
+        /* @var ?DuplicateLink $duplicate */
         $duplicate = $context->getEntity()->getInstance();
-        $clinicToDelete = $duplicate->getClinicB();
-        $this->clinics->remove($clinicToDelete, true);
-        return $this->redirectToIndex();
-    }
+        if (!$duplicate) {
+            return $this->redirectToIndex();
+        }
 
-    public function keepClinicB(AdminContext $context): RedirectResponse
-    {
-        /* @var DuplicateLink $duplicate */
-        $duplicate = $context->getEntity()->getInstance();
-        $clinicToDelete = $duplicate->getClinicA();
-        $this->clinics->remove($clinicToDelete, true);
-        return $this->redirectToIndex();
+        $clinicA = $duplicate->getClinicA();
+        $clinicB = $duplicate->getClinicB();
+
+        $request = $context->getRequest();
+        $isSubmitted = $request->request->get('submitted', default: 0);
+        $submittedToken = $request->request->get('token');
+
+        if ($isSubmitted && $this->isCsrfTokenValid('resolveDuplicate', $submittedToken)) {
+            $selectionId = (int) $request->request->get('clinicToKeep', default: 0);
+            if ($clinicA->getId() === $selectionId) {
+                $clinicToDelete = $clinicB;
+            } elseif ($clinicB->getId() === $selectionId) {
+                $clinicToDelete = $clinicA;
+            } else {
+                return $this->redirectToIndex();
+            }
+
+            $this->clinics->remove($clinicToDelete, true);
+            return $this->redirectToIndex();
+        }
+
+        $url = $this->adminUrlGenerator
+            ->setController(DuplicateLinkCrudController::class)
+            ->setAction('resolve')
+            ->setEntityId($duplicate->getId())
+            ->generateUrl();
+
+        return $this->render('admin/duplicate/resolve.html.twig', [
+            'formUrl' => $url,
+            'choices' => [$clinicA, $clinicB],
+        ]);
     }
 
     public function dismissDuplicate(AdminContext $context): RedirectResponse

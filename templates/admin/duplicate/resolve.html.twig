@@ -4,63 +4,45 @@
 
 {% block page_content %}
     <div class="container-fluid">
-        <form>
+        <form method="post" action="{{ formUrl }}">
+            <input type="hidden" name="token" value="{{ csrf_token('resolveDuplicate') }}"/>
             <div class="row">
-                <div class="col-xl-4 offset-xl-2 col-lg-6">
-                    <div class="card px-4 mb-2">
-                        <div class="card-body">
-                            <span class="fw-semibold">Name</span>
-                            <p>Blah</p>
-                            <span class="fw-semibold">Description</span>
-                            <p>n/a</p>
-                            <span class="fw-semibold">Location</span>
-                            <iframe class="d-block w-100 mb-4"
-                                    height="300"
-                                    src="https://www.openstreetmap.org/export/embed.html?marker=#(clinic.latitude)%2c#(clinic.longitude)"
-                            ></iframe>
-                            <span class="fw-semibold">Source</span>
-                            <p>Erin Reed</p>
-                            <span class="fw-semibold">Imported On</span>
-                            <p>December 1, 2022</p>
-                        </div>
-                        <div class="d-flex flex-row justify-content-center mb-2">
-                            <input type="radio" id="radioClinic1" name="clinicToKeep" value="1" required>
-                            <label for="radioClinic1" class="mx-2 mb-0 text-center">
-                                <strong>Keep this clinic</strong>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6">
-                    <div class="card px-4 mb-2">
-                        <div class="card-body">
-                            <span class="fw-semibold">Name</span>
-                            <p>Blah</p>
-                            <span class="fw-semibold">Description</span>
-                            <p>n/a</p>
-                            <span class="fw-semibold">Location</span>
-                            <iframe class="d-block w-100 mb-4"
-                                    height="300"
-                                    src="https://www.openstreetmap.org/export/embed.html?marker=#(clinic.latitude)%2c#(clinic.longitude)"
-                            ></iframe>
-                            <span class="fw-semibold">Source</span>
-                            <p>Erin Reed</p>
-                            <span class="fw-semibold">Imported On</span>
-                            <p>December 1, 2022</p>
-                        </div>
-                        <div class="d-flex flex-row justify-content-center mb-2">
-                            <input type="radio" id="radioClinic2" name="clinicToKeep" value="2">
-                            <label for="radioClinic2" class="mx-2 mb-0 text-center">
-                                <strong>Keep this clinic</strong>
-                            </label>
+                {% for choice in choices %}
+                    <div class="col-xl-4 {{ loop.index == 1 ? 'offset-xl-2' : '' }} col-lg-6">
+                        <div class="card px-4 mb-2">
+                            <div class="card-body">
+                                <span class="fw-semibold">Name</span>
+                                <p>{{ choice.name }}</p>
+                                <span class="fw-semibold">Description</span>
+                                {% if choice.description == '' %}
+                                    <p>n/a</p>
+                                {% else %}
+                                    <p>{{ choice.description }}</p>
+                                {% endif %}
+                                <span class="fw-semibold">Location</span>
+                                <iframe class="d-block w-100 mb-4"
+                                        height="300"
+                                        src="https://www.openstreetmap.org/export/embed.html?marker={{ choice.latitude }}%2c{{ choice.longitude }}"
+                                ></iframe>
+                                <span class="fw-semibold">Source</span>
+                                <p>{{ choice.dataSource }}</p>
+                                <span class="fw-semibold">Imported On</span>
+                                <p>{{ choice.importedOn|format_datetime('long', timezone='America/Chicago') }}</p>
+                            </div>
+                            <div class="d-flex flex-row justify-content-center mb-2">
+                                <input type="radio" id="radioClinic{{ choice.id }}" name="clinicToKeep" value="{{ choice.id }}" required>
+                                <label for="radioClinic{{ choice.id }}" class="mx-2 mb-0 text-center">
+                                    <strong>Keep this clinic</strong>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-center my-2">
-                        <button class="btn btn-primary" type="submit">Keep Selected</button>
+                        <button class="btn btn-primary" name="submitted" value="1" type="submit">Keep Selected</button>
                     </div>
                 </div>
             </div>
