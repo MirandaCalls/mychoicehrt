@@ -19,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DuplicateLinkCrudController extends AbstractCrudController
 {
@@ -51,13 +52,10 @@ class DuplicateLinkCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $keepClinicA = Action::new('keepClinicA', 'Keep Clinic A', 'fa fa-floppy-disk')
-            ->linkToCrudAction('keepClinicA')
+        $resolve = Action::new('resolve', 'Resolve')
+            ->linkToCrudAction('resolve')
         ;
-        $keepClinicB = Action::new('keepClinicB', 'Keep Clinic B', 'fa fa-floppy-disk')
-            ->linkToCrudAction('keepClinicB')
-        ;
-        $dismissDuplicate = Action::new('dismissDuplicate', 'Dismiss', 'fa-solid fa-shield')
+        $dismissDuplicate = Action::new('dismissDuplicate', 'Dismiss')
             ->linkToCrudAction('dismissDuplicate')
         ;
 
@@ -72,8 +70,7 @@ class DuplicateLinkCrudController extends AbstractCrudController
                 Action::SAVE_AND_CONTINUE,
             )
             ->add(Action::INDEX, $dismissDuplicate)
-            ->add(Action::INDEX, $keepClinicB)
-            ->add(Action::INDEX, $keepClinicA)
+            ->add(Action::INDEX, $resolve)
         ;
     }
 
@@ -89,6 +86,11 @@ class DuplicateLinkCrudController extends AbstractCrudController
         yield AssociationField::new('clinicA');
         yield AssociationField::new('clinicB');
         yield PercentField::new('similarity');
+    }
+
+    public function resolve(AdminContext $context): Response
+    {
+        return $this->render('admin/duplicate/resolve.html.twig');
     }
 
     public function keepClinicA(AdminContext $context): RedirectResponse
