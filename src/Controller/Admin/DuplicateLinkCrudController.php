@@ -93,7 +93,7 @@ class DuplicateLinkCrudController extends AbstractCrudController
         /* @var ?DuplicateLink $duplicate */
         $duplicate = $context->getEntity()->getInstance();
         if (!$duplicate) {
-            return $this->redirectToIndex();
+            return $this->redirect($context->getReferrer());
         }
 
         $clinicA = $duplicate->getClinicA();
@@ -110,17 +110,18 @@ class DuplicateLinkCrudController extends AbstractCrudController
             } elseif ($clinicB->getId() === $selectionId) {
                 $clinicToDelete = $clinicA;
             } else {
-                return $this->redirectToIndex();
+                return $this->redirect($context->getReferrer());
             }
 
             $this->clinics->remove($clinicToDelete, true);
-            return $this->redirectToIndex();
+            return $this->redirect($context->getReferrer());
         }
 
         $url = $this->adminUrlGenerator
             ->setController(DuplicateLinkCrudController::class)
             ->setAction('resolve')
             ->setEntityId($duplicate->getId())
+            ->setReferrer($context->getReferrer())
             ->generateUrl();
 
         return $this->render('admin/duplicate/resolve.html.twig', [
@@ -135,19 +136,7 @@ class DuplicateLinkCrudController extends AbstractCrudController
         $duplicate = $context->getEntity()->getInstance();
         $duplicate->setDismissed(true);
         $this->entityManager->flush();
-        return $this->redirectToIndex();
+        return $this->redirect($context->getReferrer());
     }
 
-    private function redirectToIndex(): RedirectResponse
-    {
-        $duplicatesIndex = $this->adminUrlGenerator
-            ->setController(DuplicateLinkCrudController::class)
-            ->setAction(Action::INDEX)
-            ->unset('entityId')
-            ->setReferrer('')
-            ->generateUrl()
-        ;
-
-        return $this->redirect($duplicatesIndex);
-    }
 }
