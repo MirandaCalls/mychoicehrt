@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ClinicRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Jsor\Doctrine\PostGIS\Types\PostGISType;
 
 #[ORM\Entity(repositoryClass: ClinicRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -30,6 +31,9 @@ class Clinic
 
     #[ORM\Column]
     private ?float $longitude = null;
+
+    #[ORM\Column(type: PostGISType::GEOGRAPHY)]
+    private ?string $location = null;
 
     #[ORM\Column]
     private ?bool $published = null;
@@ -147,12 +151,14 @@ class Clinic
         $now = new \DateTime();
         $this->importedOn = $now;
         $this->updatedOn = $now;
+        $this->location = 'POINT(' . $this->longitude . ' ' . $this->latitude . ')';
     }
 
     #[ORM\PreUpdate]
     public function onRecordUpdate()
     {
         $this->updatedOn = new \DateTime();
+        $this->location = 'POINT(' . $this->longitude . ' ' . $this->latitude . ')';
     }
 
     public function __toString(): string
