@@ -109,6 +109,22 @@ class Clinic
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param string|null $location
+     */
+    public function setLocation(?string $location): void
+    {
+        $this->location = $location;
+    }
+
     public function isPublished(): ?bool
     {
         return $this->published;

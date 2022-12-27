@@ -16,6 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ClinicRepository extends ServiceEntityRepository
 {
+    public const MILES_THRESHOLD = 0.5;
+    public const METERS_PER_MILE = 1609.344;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Clinic::class);
@@ -39,25 +42,14 @@ class ClinicRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return Clinic[]
-     */
-    public function filterAllWithCallable(callable $filterFunc): array
+    public function findClinicsNearby(Clinic $to): array
     {
-        $iterable = $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
+            ->andWhere('ST_distance(c.location, :origin) <= :milesThreshold')
+            ->setParameter('origin', $to->getLocation())
+            ->setParameter('milesThreshold', self::MILES_THRESHOLD * self::METERS_PER_MILE)
             ->getQuery()
-            ->toIterable();
-
-        $filtered = [];
-        foreach ($iterable as $clinic) {
-            if ($filterFunc($clinic)) {
-                $filtered[] = $clinic;
-            } else {
-                $this->getEntityManager()->detach($clinic);
-            }
-        }
-
-        return $filtered;
+            ->getResult();
     }
 
     public function countClinics(bool $recent = false, ?bool $published = null): Int

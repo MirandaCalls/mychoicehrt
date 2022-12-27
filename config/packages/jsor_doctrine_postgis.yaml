@@ -13,3 +13,5 @@ doctrine:
             string_functions:
                 ST_AsGeoJSON: 'Jsor\Doctrine\PostGIS\Functions\ST_AsGeoJSON'
                 ST_GeomFromGeoJSON: 'Jsor\Doctrine\PostGIS\Functions\ST_GeomFromGeoJSON'
+            numeric_functions:
+                ST_Distance: 'Jsor\Doctrine\PostGIS\Functions\ST_Distance'
