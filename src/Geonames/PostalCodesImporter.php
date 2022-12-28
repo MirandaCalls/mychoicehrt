@@ -3,7 +3,6 @@
 namespace App\Geonames;
 
 use App\Entity\GeoPostalCode;
-use Doctrine\ORM\EntityManagerInterface;
 
 class PostalCodesImporter extends GeonamesImporterAbstract
 {
@@ -23,12 +22,12 @@ class PostalCodesImporter extends GeonamesImporterAbstract
         'accuracy',
     ];
 
-    protected function setDataset(): void
+    protected function configure(): void
     {
-        $this->dataset = self::GEONAMES_ZIPCODE_DATASET;
+        $this->datasetUrl = self::GEONAMES_EXPORT_URL . '/' . self::GEONAMES_ZIPCODE_DATASET;
     }
 
-    protected function handleData(string $datasetVersion, array $data, EntityManagerInterface $entityManager): void
+    protected function handleData(array $data): void
     {
         $columnGuide = array_flip(self::COLUMNS);
         $postalCode = new GeoPostalCode();
@@ -38,7 +37,7 @@ class PostalCodesImporter extends GeonamesImporterAbstract
         $postalCode->setState($data[$columnGuide['state']]);
         $postalCode->setLatitude($data[$columnGuide['latitude']]);
         $postalCode->setLongitude($data[$columnGuide['longitude']]);
-        $postalCode->setDatasetVersion($datasetVersion);
-        $entityManager->persist($postalCode);
+        $postalCode->setDatasetVersion($this->importVersion);
+        $this->entityManager->persist($postalCode);
     }
 }

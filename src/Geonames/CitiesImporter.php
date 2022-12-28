@@ -3,11 +3,11 @@
 namespace App\Geonames;
 
 use App\Entity\GeoCity;
-use Doctrine\ORM\EntityManagerInterface;
 
 class CitiesImporter extends GeonamesImporterAbstract
 {
     public const GEONAMES_CITY_DATASET = 'dump/cities500.zip';
+    //public const ADMIN_1_CODES_DATASET = 'dump/admin1CodesASCII.txt';
     public const COLUMNS = [
         'geonameId',
         'name',
@@ -30,12 +30,12 @@ class CitiesImporter extends GeonamesImporterAbstract
         'modificationDate'
     ];
 
-    protected function setDataset(): void
+    protected function configure(): void
     {
-        $this->dataset = self::GEONAMES_CITY_DATASET;
+        $this->datasetUrl = self::GEONAMES_EXPORT_URL . '/' . self::GEONAMES_CITY_DATASET;
     }
 
-    protected function handleData(string $datasetVersion, array $data, EntityManagerInterface $entityManager): void
+    protected function handleData(array $data): void
     {
         $columnGuide = array_flip(self::COLUMNS);
         $city = new GeoCity();
@@ -45,7 +45,7 @@ class CitiesImporter extends GeonamesImporterAbstract
         $city->setLatitude($data[$columnGuide['latitude']]);
         $city->setLongitude($data[$columnGuide['longitude']]);
         $city->setCountryCode($data[$columnGuide['countryCode']]);
-        $city->setDatasetVersion($datasetVersion);
-        $entityManager->persist($city);
+        $city->setDatasetVersion($this->importVersion);
+        $this->entityManager->persist($city);
     }
 }
