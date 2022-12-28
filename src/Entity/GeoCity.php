@@ -14,9 +14,6 @@ class GeoCity
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $geonameId = null;
-
     #[ORM\Column(length: 200)]
     private ?string $name = null;
 
@@ -35,24 +32,15 @@ class GeoCity
     #[ORM\Column(length: 2)]
     private ?string $countryCode = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $datasetVersion = null;
+
     #[ORM\Column(type: 'geography')]
     private ?string $location = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getGeonameId(): ?int
-    {
-        return $this->geonameId;
-    }
-
-    public function setGeonameId(int $geonameId): self
-    {
-        $this->geonameId = $geonameId;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -123,6 +111,18 @@ class GeoCity
     public function setCountryCode(string $countryCode): self
     {
         $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
+    public function getDatasetVersion(): ?string
+    {
+        return $this->datasetVersion;
+    }
+
+    public function setDatasetVersion(string $datasetVersion): self
+    {
+        $this->datasetVersion = $datasetVersion;
 
         return $this;
     }

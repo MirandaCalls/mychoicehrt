@@ -32,6 +32,9 @@ class GeoPostalCode
     #[ORM\Column]
     private ?float $longitude = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $datasetVersion = null;
+
     #[ORM\Column(type: 'geography')]
     private ?string $location = null;
 
@@ -112,6 +115,18 @@ class GeoPostalCode
         return $this;
     }
 
+    public function getDatasetVersion(): ?string
+    {
+        return $this->datasetVersion;
+    }
+
+    public function setDatasetVersion(string $datasetVersion): self
+    {
+        $this->datasetVersion = $datasetVersion;
+
+        return $this;
+    }
+
     public function getLocation(): ?string
     {
         return $this->location;
@@ -129,4 +144,5 @@ class GeoPostalCode
     {
         $this->location = 'POINT(' . $this->longitude . ' ' . $this->latitude . ')';
     }
+
 }
