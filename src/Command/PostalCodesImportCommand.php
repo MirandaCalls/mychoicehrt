@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Repository\PostalCodeRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,20 +15,19 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 )]
 class PostalCodesImportCommand extends Command
 {
-    public const GEONAMES_POSTAL_CODES_URL = 'https://download.geonames.org/export/zip/allCountries.zip';
-    public const DOWNLOAD_DIR = '/var/geonames';
-    public const DATASET_NAME = 'allCountries';
+    public const GEONAMES_EXPORT_URL = 'https://download.geonames.org/export';
+    public const GEONAMES_CITY_DATASET = 'dump/cities500.zip';
+    public const GEONAMES_ZIPCODE_DATASET = 'zip/allCountries.zip';
 
-    private PostalCodeRepository $postalCodes;
+    public const DOWNLOAD_DIR = '/var/geonames';
+
     private HttpClientInterface $client;
     private string $workingDirectory;
 
     public function __construct(
-        PostalCodeRepository $postalCodes,
         HttpClientInterface $client,
         string $projectDir,
     ) {
-        $this->postalCodes = $postalCodes;
         $this->client = $client;
         $this->workingDirectory = $projectDir . self::DOWNLOAD_DIR;
         parent::__construct();
@@ -43,19 +41,50 @@ class PostalCodesImportCommand extends Command
             mkdir($this->workingDirectory);
         }
 
-        $zipFilepath = $this->workingDirectory . '/' . self::DATASET_NAME . '.zip';
-        $this->downloadPostalCodes($zipFilepath);
-        $this->unzipPostalCodes($zipFilepath);
+        $citiesFilepath = $this->getGeonamesDataset(self::GEONAMES_CITY_DATASET);
+        $postalCodesFilepath = $this->getGeonamesDataset(self::GEONAMES_ZIPCODE_DATASET);
 
-        $datasetFilepath = $this->workingDirectory . '/' . self::DATASET_NAME .'/' . self::DATASET_NAME . '.txt';
+        $handle = fopen($postalCodesFilepath, 'r');
+        while(!feof($handle)) {
+            $line = stream_get_line($handle, 1000000, "\n");
+            $io->text($line);
+            sleep(1);
+        }
+        fclose($handle);
+
+        foreach (file($citiesFilepath) as $line) {
+
+        }
 
         return Command::SUCCESS;
     }
 
     /**
+     * @param string $datasetFile GEONAMES_*_DATASET class constant value
+     * @return string Path to geonames dataset file
      * @throws \Exception
      */
-    private function downloadPostalCodes(string $zipFilepath)
+    private function getGeonamesDataset(string $datasetFile): string
+    {
+        $zipName = basename($datasetFile);
+        $datasetName = str_replace('.zip', '', $zipName);
+        $datasetFilepath = $this->workingDirectory . '/' . $datasetName . '/' . $datasetName . '.txt';
+        if (file_exists($datasetFilepath)) {
+            return $datasetFilepath;
+        }
+
+        $downloadUrl = self::GEONAMES_EXPORT_URL . '/' . $datasetFile;
+        $zipFilepath = $this->workingDirectory . '/' . $zipName;
+        $this->downloadDataset($downloadUrl, $zipFilepath);
+        $this->unzipDataset($zipFilepath);
+
+        return $datasetFilepath;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function downloadDataset(string $downloadUrl, string $zipFilepath)
     {
         $zipFileHandle = fopen($zipFilepath, mode: 'w');
         if ($zipFileHandle === false) {
@@ -63,7 +92,7 @@ class PostalCodesImportCommand extends Command
         }
 
         try {
-            $res = $this->client->request('GET', self::GEONAMES_POSTAL_CODES_URL);
+            $res = $this->client->request('GET', $downloadUrl);
             if (200 !== $statusCode = $res->getStatusCode()) {
                 throw new \Exception('Geonames returned failing status code: ' . $statusCode);
             }
@@ -71,16 +100,20 @@ class PostalCodesImportCommand extends Command
             foreach ($this->client->stream($res) as $chunk) {
                 fwrite($zipFileHandle, $chunk->getContent());
             }
-        } catch (\Throwable $e) {
-            throw new \Exception('HTTP request to fetch postal codes failed.');
+        } catch (\Throwable) {
+            throw new \Exception('Failed to download file: ' . $downloadUrl);
         }
 
         fclose($zipFileHandle);
     }
 
-    private function unzipPostalCodes(string $zipFilepath)
+    /**
+     * @throws \Exception
+     */
+    private function unzipDataset(string $zipFilepath)
     {
-        $extractedPath = $this->workingDirectory . '/' . self::DATASET_NAME;
+        $datasetName = str_replace('.zip', '', basename($zipFilepath));
+        $extractedPath = $this->workingDirectory . '/' . $datasetName;
 
         $zip = new \ZipArchive();
         $res = $zip->open($zipFilepath);
@@ -91,4 +124,5 @@ class PostalCodesImportCommand extends Command
             throw new \Exception('Failed to unzip ' . $zipFilepath);
         }
     }
+
 }
