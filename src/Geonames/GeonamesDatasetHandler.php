@@ -11,8 +11,6 @@ class GeonamesDatasetHandler
     private HttpClientInterface $client;
     private string $workingDirectory;
 
-    private string $datasetFilepath = '';
-
     public function __construct(
         HttpClientInterface $client,
         string $projectDir,
@@ -24,7 +22,7 @@ class GeonamesDatasetHandler
     /**
      * @throws \Exception
      */
-    public function download(string $fileUrl, bool $zipped): void
+    public function download(string $fileUrl, bool $zipped): string
     {
         if (!file_exists($this->workingDirectory)) {
             mkdir($this->workingDirectory);
@@ -39,19 +37,19 @@ class GeonamesDatasetHandler
             $filename = str_replace('.zip', '.txt', $filename);
         }
 
-        $this->datasetFilepath = $this->workingDirectory . '/' . $filename;
+        return $this->workingDirectory . '/' . $filename;
     }
 
     /**
      * @throws \Exception
      */
-    public function processData(callable $handler): int
+    public function processData(string $datasetFilepath, callable $handler): int
     {
-        if ($this->datasetFilepath === '') {
-            throw new \Exception('No dataset loaded!');
+        if (!file_exists($datasetFilepath)) {
+            throw new \Exception('File does not exist');
         }
 
-        $handle = fopen($this->datasetFilepath, 'r');
+        $handle = fopen($datasetFilepath, 'r');
         $recordCount = 0;
         while(!feof($handle)) {
             $row = fgets($handle);
