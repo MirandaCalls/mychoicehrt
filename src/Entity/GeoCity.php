@@ -29,6 +29,9 @@ class GeoCity
     #[ORM\Column]
     private ?float $longitude = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $state = null;
+
     #[ORM\Column(length: 2)]
     private ?string $countryCode = null;
 
@@ -103,6 +106,18 @@ class GeoCity
         return $this;
     }
 
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
     public function getCountryCode(): ?string
     {
         return $this->countryCode;
@@ -144,4 +159,5 @@ class GeoCity
     {
         $this->location = 'POINT(' . $this->longitude . ' ' . $this->latitude . ')';
     }
+
 }
