@@ -43,7 +43,7 @@ class GeoCityRepository extends ServiceEntityRepository
     /**
      * @return GeoCity[]
      */
-    public function search(string $searchText): array
+    public function search(string $countryCode, string $searchText): array
     {
         $queryTerms = explode(' ', $searchText);
         $queryTerms = array_filter($queryTerms, function($val) {
@@ -60,7 +60,12 @@ class GeoCityRepository extends ServiceEntityRepository
                 similarity(:searchText, geo_city.name || ' ' || geo_city.state) similarity,
                 to_tsvector('simple', geo_city.alternate_names) otherNames
             WHERE
-                similarity > 0 OR query @@ otherNames
+                country_code = :countryCode
+            AND (
+                    similarity > 0 
+                OR 
+                    query @@ otherNames
+            )
             ORDER BY similarity DESC NULLS LAST
             LIMIT 10
             ;
@@ -80,6 +85,7 @@ class GeoCityRepository extends ServiceEntityRepository
         $rsm->addFieldResult('c', 'location', 'location');
 
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter('countryCode', $countryCode);
         $query->setParameter('queryTerms', $queryTerms);
         $query->setParameter('searchText', $searchText);
         return $query->getResult();

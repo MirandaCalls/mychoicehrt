@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\GeoPostalCode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,4 +40,41 @@ class GeoPostalCodeRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return GeoPostalCode[]
+     */
+    public function search(string $countryCode, string $searchText): array
+    {
+        $searchPattern = str_replace(' ', '', $searchText);
+
+        $sql = "
+            SELECT
+                geo_postal_code.*
+            FROM
+                geo_postal_code
+            WHERE
+                country_code = :countryCode
+            AND
+                replace(postal_code, ' ', '') like (:searchPattern || '%')
+            LIMIT 10
+            ;
+        ";
+
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult(GeoPostalCode::class, 'p');
+        $rsm->addFieldResult('p', 'id', 'id');
+        $rsm->addFieldResult('p', 'country_code', 'countryCode');
+        $rsm->addFieldResult('p', 'postal_code', 'postalCode');
+        $rsm->addFieldResult('p', 'place_name', 'placeName');
+        $rsm->addFieldResult('p', 'state', 'state');
+        $rsm->addFieldResult('p', 'latitude', 'latitude');
+        $rsm->addFieldResult('p', 'longitude', 'longitude');
+        $rsm->addFieldResult('p', 'dataset_version', 'datasetVersion');
+        $rsm->addFieldResult('p', 'location', 'location');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter('countryCode', $countryCode);
+        $query->setParameter('searchPattern', $searchPattern);
+        return $query->getResult();
+    }
 }
