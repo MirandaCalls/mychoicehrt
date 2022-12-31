@@ -145,4 +145,9 @@ class GeoPostalCode
         $this->location = 'POINT(' . $this->longitude . ' ' . $this->latitude . ')';
     }
 
+    public function toString(): string
+    {
+        return $this->postalCode . ' ' . $this->placeName . ', ' . $this->state . ' ' . $this->countryCode;
+    }
+
 }

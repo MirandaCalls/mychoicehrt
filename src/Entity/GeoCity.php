@@ -155,9 +155,14 @@ class GeoCity
     }
 
     #[ORM\PrePersist]
-    public function onRecordCreate()
+    public function onRecordCreate(): void
     {
         $this->location = 'POINT(' . $this->longitude . ' ' . $this->latitude . ')';
+    }
+
+    public function toString(): string
+    {
+        return $this->name . ', ' . $this->state . ' ' . $this->countryCode;
     }
 
 }
