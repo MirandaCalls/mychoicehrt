@@ -15,7 +15,6 @@ Encore
     //.setManifestKeyPrefix('build/')
 
     .addEntry('login', './assets/login.ts')
-    .addEntry('admin_dashboard', './assets/admin_dashboard.ts')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

@@ -6,6 +6,7 @@ use App\Entity\Clinic;
 use App\Entity\DuplicateLink;
 use App\Repository\ClinicRepository;
 use App\Repository\DuplicateLinkRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -47,6 +48,11 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('mychoicehrt Admin')
             ->setFaviconPath('/images/favicon.ico')
         ;
+    }
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()->addCssFile('admin.css');
     }
 
     public function configureMenuItems(): iterable
