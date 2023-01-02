@@ -43,7 +43,7 @@ class ClinicRepository extends ServiceEntityRepository
         }
     }
 
-    public function findClinicsWithinRadius(float $centerLat, float $centerLong, float $miles) {
+    public function findClinicsWithinRadius(float $centerLat, float $centerLong, float $miles, ?int $limit = null) {
         $sql = "
             SELECT
                 clinic.*,
@@ -54,9 +54,11 @@ class ClinicRepository extends ServiceEntityRepository
             WHERE
                 distance <= :radius
             ORDER BY distance
-            LIMIT 10
-            ;
         ";
+
+        if ($limit !== null) {
+            $sql .= 'LIMIT :limit';
+        }
 
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult(Clinic::class, 'c');
@@ -75,6 +77,9 @@ class ClinicRepository extends ServiceEntityRepository
         $query->setParameter('originLong', $centerLong);
         $query->setParameter('originLat', $centerLat);
         $query->setParameter('radius', $miles * self::METERS_PER_MILE);
+        if ($limit !== null) {
+            $query->setParameter('limit', $limit);
+        }
         return $query->getResult();
     }
 
