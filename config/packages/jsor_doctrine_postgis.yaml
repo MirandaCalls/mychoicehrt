@@ -15,3 +15,4 @@ doctrine:
                 ST_GeomFromGeoJSON: 'Jsor\Doctrine\PostGIS\Functions\ST_GeomFromGeoJSON'
             numeric_functions:
                 ST_Distance: 'Jsor\Doctrine\PostGIS\Functions\ST_Distance'
+                ST_MakePoint: 'Jsor\Doctrine\PostGIS\Functions\ST_MakePoint'
