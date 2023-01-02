@@ -43,21 +43,31 @@ class ClinicRepository extends ServiceEntityRepository
         }
     }
 
-    public function findClinicsWithinRadius(float $centerLat, float $centerLong, float $miles, ?int $limit = null) {
+    public function findClinicsWithinRadius(
+        float $centerLat,
+        float $centerLong,
+        float $miles,
+        ?int $limit = null,
+        ?int $offset = null,
+    ) {
         $sql = "
             SELECT
                 clinic.*,
                 distance
             FROM 
                 clinic,
-                ST_Distance(clinic.location, ST_MakePoint(:originLong, :originLat)) as distance
+                ST_Distance(clinic.location, ST_MakePoint(:centerLong, :centerLat)) as distance
             WHERE
                 distance <= :radius
             ORDER BY distance
         ";
 
         if ($limit !== null) {
-            $sql .= 'LIMIT :limit';
+            $sql .= 'LIMIT :limit ';
+        }
+
+        if ($offset !== null) {
+            $sql .= 'OFFSET :offset ';
         }
 
         $rsm = new ResultSetMapping();
@@ -74,11 +84,14 @@ class ClinicRepository extends ServiceEntityRepository
         $rsm->addFieldResult('c', 'updated_on', 'updatedOn');
 
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
-        $query->setParameter('originLong', $centerLong);
-        $query->setParameter('originLat', $centerLat);
+        $query->setParameter('centerLong', $centerLong);
+        $query->setParameter('centerLat', $centerLat);
         $query->setParameter('radius', $miles * self::METERS_PER_MILE);
         if ($limit !== null) {
             $query->setParameter('limit', $limit);
+        }
+        if ($offset !== null) {
+            $query->setParameter('offset', $offset);
         }
         return $query->getResult();
     }
@@ -88,6 +101,19 @@ class ClinicRepository extends ServiceEntityRepository
         return $this->findClinicsWithinRadius(
             $to->getLatitude(), $to->getLongitude(), self::NEARBY_CLINICS_RADIUS
         );
+    }
+
+    public function countClinicsWithinRadius(float $centerLat, float $centerLong, int $radius): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->andWhere('ST_Distance(c.location, ST_MakePoint(:centerLong, :centerLat)) <= :radius')
+            ->setParameter('centerLong', $centerLong)
+            ->setParameter('centerLat', $centerLat)
+            ->setParameter('radius', $radius * self::METERS_PER_MILE)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     public function countClinics(bool $recent = false, ?bool $published = null): Int
