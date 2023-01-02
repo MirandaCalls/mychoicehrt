@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Clinic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,13 +44,38 @@ class ClinicRepository extends ServiceEntityRepository
     }
 
     public function findClinicsWithinRadius(float $centerLat, float $centerLong, float $miles) {
-        return $this->createQueryBuilder('c')
-            ->andWhere('ST_distance(c.location, ST_MakePoint(:originLong, :originLat)) <= :radius')
-            ->setParameter('originLong', $centerLong)
-            ->setParameter('originLat', $centerLat)
-            ->setParameter('radius', $miles * self::METERS_PER_MILE)
-            ->getQuery()
-            ->getResult();
+        $sql = "
+            SELECT
+                clinic.*,
+                distance
+            FROM 
+                clinic,
+                ST_Distance(clinic.location, ST_MakePoint(:originLong, :originLat)) as distance
+            WHERE
+                distance <= :radius
+            ORDER BY distance
+            LIMIT 10
+            ;
+        ";
+
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult(Clinic::class, 'c');
+        $rsm->addFieldResult('c', 'id', 'id');
+        $rsm->addFieldResult('c', 'data_source', 'dataSource');
+        $rsm->addFieldResult('c', 'name', 'name');
+        $rsm->addFieldResult('c', 'description', 'description');
+        $rsm->addFieldResult('c', 'latitude', 'latitude');
+        $rsm->addFieldResult('c', 'longitude', 'longitude');
+        $rsm->addFieldResult('c', 'location', 'location');
+        $rsm->addFieldResult('c', 'published', 'published');
+        $rsm->addFieldResult('c', 'imported_on', 'importedOn');
+        $rsm->addFieldResult('c', 'updated_on', 'updatedOn');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter('originLong', $centerLong);
+        $query->setParameter('originLat', $centerLat);
+        $query->setParameter('radius', $miles * self::METERS_PER_MILE);
+        return $query->getResult();
     }
 
     public function findClinicsNearby(Clinic $to): array
