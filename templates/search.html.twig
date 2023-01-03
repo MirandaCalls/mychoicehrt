@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search{% endblock %}
+
+{% block body %}
+    {% if searchResults.matchedLocation %}
+        <strong>Showing search results for {{ searchResults.matchedLocation.title }}</strong>
+        {% for clinic in searchResults.results %}
+            <p>{{ clinic.name }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No results found for {{ searchText }}</p>
+    {% endif %}
+{% endblock %}

@@ -2,9 +2,14 @@
 
 namespace App\SearchEngine;
 
+use App\Entity\Clinic;
+
 readonly class SearchEngineResults
 {
     public function __construct(
+        /**
+         * @var Clinic[]
+         */
         public array $results,
         public ?array $matchedLocation,
         public int $searchRadius,
