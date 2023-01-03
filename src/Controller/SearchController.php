@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\SearchFormType;
 use App\SearchEngine\SearchEngine;
 use App\SearchEngine\SearchEngineParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,20 +22,26 @@ class SearchController extends AbstractController
     #[Route('/search', name: 'app_search')]
     public function search(Request $req): Response
     {
-        $searchText = $req->query->get('searchText') ?? '';
-        $searchType = $req->query->get('searchType') ?? 'city';
-        $countryCode = $req->query->get('countryCode') ?? 'US';
+        $searchForm = $this->createForm(SearchFormType::class);
+        $searchForm->handleRequest($req);
 
-        $params = new SearchEngineParams();
-        $params->setSearchText($searchText);
-        $params->setSearchType($searchType);
-        $params->setCountyCode($countryCode);
+        $formData = null;
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $formData = $searchForm->getData();
 
-        $results = $this->searchEngine->search($params);
+            $params = new SearchEngineParams();
+            $params->setSearchText($formData['searchText']);
+            $params->setSearchType($formData['searchType']);
+            $params->setCountryCode($formData['countryCode']);
+            $results = $this->searchEngine->search($params);
+        } else {
+            $results = null;
+        }
 
         return $this->render('search.html.twig', [
-            'searchText' => '55125',
             'searchResults' => $results,
+            'searchForm' => $searchForm,
+            'formData' => $formData,
         ]);
     }
 

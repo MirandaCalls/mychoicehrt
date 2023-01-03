@@ -11,7 +11,7 @@ class SearchEngineParams
 
     private string $searchType = self::SEARCH_TYPE_CITY;
 
-    private string $countyCode = 'US';
+    private string $countryCode = 'US';
 
     private ?int $searchRadius = null;
 
@@ -43,14 +43,14 @@ class SearchEngineParams
         $this->searchType = $searchType;
     }
 
-    public function getCountyCode(): string
+    public function getCountryCode(): string
     {
-        return $this->countyCode;
+        return $this->countryCode;
     }
 
-    public function setCountyCode(string $countyCode): void
+    public function setCountryCode(string $countryCode): void
     {
-        $this->countyCode = $countyCode;
+        $this->countryCode = $countryCode;
     }
 
     public function getSearchRadius(): ?int

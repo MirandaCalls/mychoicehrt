@@ -3,12 +3,16 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
-    {% if searchResults.matchedLocation %}
-        <strong>Showing search results for {{ searchResults.matchedLocation.title }}</strong>
-        {% for clinic in searchResults.results %}
-            <p>{{ clinic.name }}</p>
-        {% endfor %}
-    {% else %}
-        <p>No results found for {{ searchText }}</p>
+    {{ form(searchForm) }}
+
+    {% if searchResults %}
+        {% if searchResults.matchedLocation %}
+            <strong>Showing search results for {{ searchResults.matchedLocation.title }}</strong>
+            {% for clinic in searchResults.results %}
+                <p>{{ clinic.name }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
+        {% endif %}
     {% endif %}
 {% endblock %}

@@ -3,25 +3,5 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <form method="get" action="/search">
-        <div>
-            <label for="countryCodeInput">Select Country</label>
-            <select id="countryCodeInput" name="countryCode">
-                <option value="US">United States</option>
-            </select>
-        </div>
-        <div>
-            <label for="searchTypeCityRadio">Search by City</label>
-            <input id="searchTypeCityRadio" type="radio" name="searchType" value="city" checked required>
-        </div>
-        <div>
-            <label for="searchTypePostalRadio">Search by Postal Code</label>
-            <input id="searchTypePostalRadio" type="radio" name="searchType" value="postal" required>
-        </div>
-        <div>
-            <label for="searchTextInput">Search Text</label>
-            <input id="searchTextInput" name="searchText" type="text" placeholder="Search by city or postal code" required>
-        </div>
-        <button type="submit">Search</button>
-    </form>
+    {{ form(searchForm) }}
 {% endblock %}
