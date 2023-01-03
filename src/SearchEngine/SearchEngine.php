@@ -1,15 +1,14 @@
 <?php
 
-namespace App;
+namespace App\SearchEngine;
 
 use App\Geonames\Geocoder;
+use App\Geonames\SearchResult;
 use App\Repository\ClinicRepository;
 
 class SearchEngine
 {
     public const RECORDS_LIMIT = 10;
-    public const SEARCH_TYPE_CITY = 'city';
-    public const SEARCH_TYPE_POSTAL = 'postal';
 
     private ClinicRepository $clinics;
     private Geocoder $geocoder;
@@ -22,23 +21,34 @@ class SearchEngine
         $this->geocoder = $geocoder;
     }
 
-    public function search(string $searchText, string $searchType, SearchEngineParams $params): SearchEngineResults
+    public function search(SearchEngineParams $params): SearchEngineResults
     {
-        if ($searchType === self::SEARCH_TYPE_POSTAL) {
-            $locationResults = $this->geocoder->searchPostalCodes($searchText);
-        } elseif ($searchType === self::SEARCH_TYPE_CITY) {
-            $locationResults = $this->geocoder->searchCities($searchText);
-        } else {
-            throw new \Exception('Unsupported search type!');
+        if (($location = $params->getLocation()) !== null) {
+            $locationResults = [
+                new SearchResult(
+                    $location['title'] ?? 'Manually Entered Coordinates',
+                    $location['latitude'] ?? 0,
+                    $location['longitude'] ?? 0,
+                )
+            ];
+        } elseif ($params->getSearchType() === SearchEngineParams::SEARCH_TYPE_POSTAL) {
+            $locationResults = $this->geocoder->searchPostalCodes($params->getSearchText());
+        } elseif ($params->getSearchType() === SearchEngineParams::SEARCH_TYPE_CITY) {
+            $locationResults = $this->geocoder->searchCities($params->getSearchText());
         }
 
         if (empty($locationResults)) {
             return new SearchEngineResults(
-                0, 0, [], 0, ''
+                results: [],
+                matchedLocation: null,
+                searchRadius: 0,
+                totalResults: 0,
+                totalPages: 0,
             );
         }
 
         $matchedLocation = $locationResults[0];
+        $title = $matchedLocation->title;
         $latitude = $matchedLocation->latitude;
         $longitude = $matchedLocation->longitude;
         $radius = $params->getSearchRadius();
@@ -59,11 +69,14 @@ class SearchEngine
         );
 
         return new SearchEngineResults(
-            totalResults: $totalResults,
-            totalPages: ceil($totalResults / self::RECORDS_LIMIT),
             results: $clinics,
+            matchedLocation: [
+                'title' => $title,
+                'coordinates' => $latitude . ',' . $longitude,
+            ],
             searchRadius: $radius,
-            matchedLocation: $matchedLocation->title
+            totalResults: $totalResults,
+            totalPages: ceil($totalResults/self::RECORDS_LIMIT),
         );
     }
 
