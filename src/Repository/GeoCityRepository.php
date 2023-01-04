@@ -91,4 +91,21 @@ class GeoCityRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return string[]
+     */
+    public function findUniqueCountryCodes(): array
+    {
+        $results = $this->createQueryBuilder('c')
+            ->select('c.countryCode')
+            ->distinct()
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return array_map(function($result) {
+            return $result['countryCode'];
+        }, $results);
+    }
+
 }
