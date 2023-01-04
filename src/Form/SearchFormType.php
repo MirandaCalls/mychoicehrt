@@ -3,11 +3,15 @@
 namespace App\Form;
 
 use App\Repository\GeoCityRepository;
+use App\SearchEngine\SearchEngineParams;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\AtLeastOneOf;
+use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SearchFormType extends AbstractType
 {
@@ -25,7 +29,7 @@ class SearchFormType extends AbstractType
                 'label' => 'Country',
                 'required' => true,
                 'choices' => $this->loadCountries(),
-                'preferred_choices' => ['US']
+                'preferred_choices' => ['US'],
             ])
             ->add('searchType', type: ChoiceType::class, options: [
                 'label' => 'Search using',
@@ -36,10 +40,20 @@ class SearchFormType extends AbstractType
                     'City' => 'city',
                     'Postal Code' => 'postal',
                 ],
+                'constraints' => [
+                    new NotBlank(message: 'This field is required.'),
+                    new AtLeastOneOf([
+                        new EqualTo(value: SearchEngineParams::SEARCH_TYPE_CITY),
+                        new EqualTo(value: SearchEngineParams::SEARCH_TYPE_POSTAL),
+                    ]),
+                ],
             ])
             ->add('searchText', options: [
                 'label' => 'Search Text',
                 'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ],
             ])
             ->add('submit', type: SubmitType::class)
         ;
