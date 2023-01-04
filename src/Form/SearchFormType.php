@@ -61,7 +61,7 @@ class SearchFormType extends AbstractType
                 ],
             ])
             ->add('autoFindRadius', type: CheckboxType::class, options: [
-                'label' => 'Automatically Find Clinics',
+                'label' => 'Smart Search Radius',
                 'required' => false,
             ])
             ->add('searchRadius', type: NumberType::class, options: [
