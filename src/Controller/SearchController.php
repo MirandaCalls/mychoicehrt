@@ -27,9 +27,13 @@ class SearchController extends AbstractController
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($req);
 
-        $formData = null;
+        $pageFilters = null;
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $formData = $searchForm->getData();
+            $pageFilters = [];
+            foreach ($formData as $key => $value) {
+                $pageFilters['search_form[' . $key . ']'] = $value;
+            }
 
             $params = new SearchEngineParams();
             $params->setSearchText($formData['searchText']);
@@ -39,6 +43,7 @@ class SearchController extends AbstractController
 
             if (!$formData['autoFindRadius']) {
                 $params->setSearchRadius((float)$formData['searchRadius']);
+                unset($pageFilters['search_form[autoFindRadius]']);
             }
 
             $results = $this->searchEngine->search($params);
@@ -49,7 +54,7 @@ class SearchController extends AbstractController
         return $this->render('search.html.twig', [
             'searchResults' => $results,
             'searchForm' => $searchForm,
-            'formData' => $formData,
+            'pageFilters' => $pageFilters,
         ]);
     }
 

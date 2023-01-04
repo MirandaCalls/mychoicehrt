@@ -18,9 +18,13 @@
                 <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
             {% endfor %}
 
-            {% if searchResults.totalResults > 0 %}
-               <p>TODO pagination controls</p>
-            {% endif %}
+            {% include 'pagination.html.twig' with {
+                currentFilters: pageFilters,
+                currentPage: searchResults.currentPage,
+                paginationPath: "app_search",
+                lastPage: searchResults.totalPages,
+                showAlwaysFirstAndLast: true
+            } only %}
         {% else %}
             <p>No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
         {% endif %}
