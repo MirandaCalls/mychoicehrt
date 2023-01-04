@@ -60,12 +60,9 @@ class SearchFormType extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('autoFindRadius', type: CheckboxType::class, options: [
-                'label' => 'Smart Search Radius',
-                'required' => false,
-            ])
             ->add('searchRadius', type: NumberType::class, options: [
                 'label' => 'Search Radius (miles)',
+                'required' => false,
             ])
             ->add('submit', type: SubmitType::class)
         ;
