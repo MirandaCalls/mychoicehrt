@@ -14,6 +14,7 @@ readonly class SearchEngineResults
         public ?array $matchedLocation,
         public int $searchRadius,
         public int $totalResults,
+        public int $currentPage,
         public int $totalPages,
     ) {}
 }

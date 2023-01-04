@@ -61,6 +61,10 @@ class SearchEngine
         }
 
         $page = $params->getPage();
+        $maxPages = ceil($totalResults/self::RECORDS_LIMIT);
+
+        $page = max(1, $page);
+        $page = min($page, $maxPages);
         $offset = ($page - 1) * self::RECORDS_LIMIT;
         $clinics = $this->clinics->findClinicsWithinRadius(
             $latitude,
@@ -78,7 +82,8 @@ class SearchEngine
             ],
             searchRadius: $radius,
             totalResults: $totalResults,
-            totalPages: ceil($totalResults/self::RECORDS_LIMIT),
+            currentPage: $page,
+            totalPages: $maxPages,
         );
     }
 

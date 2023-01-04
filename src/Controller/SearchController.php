@@ -22,6 +22,8 @@ class SearchController extends AbstractController
     #[Route('/search', name: 'app_search')]
     public function search(Request $req): Response
     {
+        $page = $req->query->getInt(key: 'page', default: 1);
+
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($req);
 
@@ -33,6 +35,7 @@ class SearchController extends AbstractController
             $params->setSearchText($formData['searchText']);
             $params->setSearchType($formData['searchType']);
             $params->setCountryCode($formData['countryCode']);
+            $params->setPage($page);
             $results = $this->searchEngine->search($params);
         } else {
             $results = null;
