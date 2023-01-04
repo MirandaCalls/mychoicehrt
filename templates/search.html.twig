@@ -4,13 +4,15 @@
 
 {% block body %}
     {{ form(searchForm) }}
-
+    <hr>
     {% if searchResults %}
         {% if searchResults.matchedLocation %}
-            <strong>Showing search results for {{ searchResults.matchedLocation.title }}</strong>
+            <strong>Showing search results within {{ searchResults.searchRadius }} {{ searchResults.totalResults > 1 ? 'miles' : 'mile' }} of {{ searchResults.matchedLocation.title }}</strong>
             {% for clinic in searchResults.results %}
                 <p>{{ clinic.name }}</p>
             {% endfor %}
+
+            <p>{{ searchResults.totalResults }} clinics found</p>
         {% else %}
             <p>No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
         {% endif %}

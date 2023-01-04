@@ -36,6 +36,11 @@ class SearchController extends AbstractController
             $params->setSearchType($formData['searchType']);
             $params->setCountryCode($formData['countryCode']);
             $params->setPage($page);
+
+            if (!$formData['autoFindRadius']) {
+                $params->setSearchRadius((float)$formData['searchRadius']);
+            }
+
             $results = $this->searchEngine->search($params);
         } else {
             $results = null;

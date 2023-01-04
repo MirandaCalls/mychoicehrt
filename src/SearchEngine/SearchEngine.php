@@ -45,6 +45,7 @@ class SearchEngine
                 matchedLocation: null,
                 searchRadius: 0,
                 totalResults: 0,
+                currentPage: 0,
                 totalPages: 0,
             );
         }
@@ -65,14 +66,18 @@ class SearchEngine
 
         $page = max(1, $page);
         $page = min($page, $maxPages);
-        $offset = ($page - 1) * self::RECORDS_LIMIT;
-        $clinics = $this->clinics->findClinicsWithinRadius(
-            $latitude,
-            $longitude,
-            $radius,
-            limit: self::RECORDS_LIMIT,
-            offset: $offset,
-        );
+
+        $clinics = [];
+        if ($totalResults > 0) {
+            $offset = ($page - 1) * self::RECORDS_LIMIT;
+            $clinics = $this->clinics->findClinicsWithinRadius(
+                $latitude,
+                $longitude,
+                $radius,
+                limit: self::RECORDS_LIMIT,
+                offset: $offset,
+            );
+        }
 
         return new SearchEngineResults(
             results: $clinics,
