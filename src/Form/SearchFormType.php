@@ -30,6 +30,9 @@ class SearchFormType extends AbstractType
                 'required' => true,
                 'choices' => $this->loadCountries(),
                 'preferred_choices' => ['US'],
+                'constraints' => [
+                    new NotBlank(message: 'This field is required.')
+                ],
             ])
             ->add('searchType', type: ChoiceType::class, options: [
                 'label' => 'Search using',
