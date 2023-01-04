@@ -7,12 +7,20 @@
     <hr>
     {% if searchResults %}
         {% if searchResults.matchedLocation %}
-            <strong>Showing search results within {{ searchResults.searchRadius }} {{ searchResults.totalResults > 1 ? 'miles' : 'mile' }} of {{ searchResults.matchedLocation.title }}</strong>
+            <h3>Showing {{ searchResults.totalResults }} results within {{ searchResults.searchRadius }} {{ searchResults.totalResults > 1 ? 'miles' : 'mile' }} of {{ searchResults.matchedLocation.title }}</h3>
             {% for clinic in searchResults.results %}
-                <p>{{ clinic.name }}</p>
+                <strong>{{ clinic.name }}</strong>
+                {% if clinic.description %}
+                    <p>{{ clinic.description }}</p>
+                {% else %}
+                    <p>No description</p>
+                {% endif %}
+                <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
             {% endfor %}
 
-            <p>{{ searchResults.totalResults }} clinics found</p>
+            {% if searchResults.totalResults > 0 %}
+               <p>TODO pagination controls</p>
+            {% endif %}
         {% else %}
             <p>No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
         {% endif %}

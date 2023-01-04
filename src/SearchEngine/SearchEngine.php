@@ -83,7 +83,8 @@ class SearchEngine
             results: $clinics,
             matchedLocation: [
                 'title' => $title,
-                'coordinates' => $latitude . ',' . $longitude,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
             ],
             searchRadius: $radius,
             totalResults: $totalResults,
