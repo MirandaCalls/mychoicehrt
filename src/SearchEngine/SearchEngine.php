@@ -23,6 +23,8 @@ class SearchEngine
 
     public function search(SearchEngineParams $params): SearchEngineResults
     {
+        $this->geocoder->setCountry($params->getCountryCode());
+
         if (($location = $params->getLocation()) !== null) {
             $locationResults = [
                 new SearchResult(
