@@ -54,7 +54,7 @@ class SearchFormType extends AbstractType
                 ],
             ])
             ->add('searchText', options: [
-                'label' => 'Search Text',
+                'label' => 'Location',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
@@ -63,6 +63,9 @@ class SearchFormType extends AbstractType
             ->add('searchRadius', type: NumberType::class, options: [
                 'label' => 'Search Radius (miles)',
                 'required' => false,
+                'attr' => [
+                    'placeholder' => 'Automatic',
+                ],
             ])
             ->add('submit', type: SubmitType::class)
         ;

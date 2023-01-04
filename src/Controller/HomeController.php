@@ -17,8 +17,6 @@ class HomeController extends AbstractController
 
         $formData = $searchForm->getData();
         $formData['searchType'] = SearchEngineParams::SEARCH_TYPE_CITY;
-        // Opt most users into auto-finding the best search radius
-        $formData['autoFindRadius'] = true;
         $searchForm->setData($formData);
 
         return $this->render('home.html.twig', [
