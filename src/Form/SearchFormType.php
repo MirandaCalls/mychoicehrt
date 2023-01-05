@@ -5,8 +5,8 @@ namespace App\Form;
 use App\Repository\GeoCityRepository;
 use App\SearchEngine\SearchEngineParams;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -67,6 +67,9 @@ class SearchFormType extends AbstractType
                     'placeholder' => 'Automatic',
                 ],
             ])
+            ->add('page', type: HiddenType::class, options: [
+                'required' => false,
+            ])
             ->add('submit', type: SubmitType::class)
         ;
     }
@@ -90,5 +93,11 @@ class SearchFormType extends AbstractType
             'action' => '/search',
             'csrf_protection' => false,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        // Removes the search_form[] prefix from form input names
+        return '';
     }
 }

@@ -22,24 +22,19 @@ class SearchController extends AbstractController
     #[Route('/search', name: 'app_search')]
     public function search(Request $req): Response
     {
-        $page = $req->query->getInt(key: 'page', default: 1);
-
         $searchForm = $this->createForm(SearchFormType::class);
         $searchForm->handleRequest($req);
 
         $pageFilters = null;
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $formData = $searchForm->getData();
-            $pageFilters = [];
-            foreach ($formData as $key => $value) {
-                $pageFilters['search_form[' . $key . ']'] = $value;
-            }
+            $pageFilters = $formData;
 
             $params = new SearchEngineParams();
             $params->setSearchText($formData['searchText']);
             $params->setSearchType($formData['searchType']);
             $params->setCountryCode($formData['countryCode']);
-            $params->setPage($page);
+            $params->setPage((int) $formData['page']);
 
             if (!empty($formData['searchRadius'])) {
                 $params->setSearchRadius((float)$formData['searchRadius']);
@@ -47,7 +42,7 @@ class SearchController extends AbstractController
 
             $results = $this->searchEngine->search($params);
 
-            $pageFilters['search_form[searchRadius]'] = $results->searchRadius;
+            $pageFilters['searchRadius'] = $results->searchRadius;
         } else {
             $results = null;
         }
