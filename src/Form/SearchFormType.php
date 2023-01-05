@@ -64,7 +64,7 @@ class SearchFormType extends AbstractType
                 'label' => 'Search Radius (miles)',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Automatic',
+                    'placeholder' => 'Automatic Choose',
                 ],
             ])
             ->add('page', type: HiddenType::class, options: [
