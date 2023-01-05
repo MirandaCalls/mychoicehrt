@@ -1,0 +1,23 @@
+@import '../theme';
+
+body {
+    display: flex;
+    background: url('../../images/login-background.jpg') no-repeat center;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 150px;
+}
+
+.login-hover {
+    min-width: 400px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .login-hover {
+        background-color: #404040;
+    }
+}

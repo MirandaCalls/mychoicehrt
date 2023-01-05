@@ -1,13 +1,24 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <title>{% block title %}{% endblock %} | My Choice HRT</title>
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_home') }}">
+                    <img src="{{ asset('images/logo_no_text.png') }}" alt="pill shaped logo with transgender flag colors"/>
+                    My Choice HRT
+                </a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            {% block body %}{% endblock %}
+        </div>
         {% block scripts %}{% endblock %}
     </body>
 </html>

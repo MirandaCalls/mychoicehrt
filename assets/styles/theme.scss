@@ -1,0 +1,24 @@
+@import './_bootstrap.scss';
+@import './_variables';
+
+@font-face {
+  font-family: 'Rajdhani';
+  src: url('../fonts/Rajdhani-SemiBold.ttf');
+}
+
+html, body {
+  height: 100%;
+}
+
+.navbar-brand img {
+  width: 40px;
+}
+
+.navbar-brand {
+  font-family: 'Rajdhani', sans-serif;
+  color: $color-dark-blue;
+}
+
+.navbar-brand:hover {
+  color: $color-dark-blue;
+}

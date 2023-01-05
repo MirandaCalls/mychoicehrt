@@ -1,37 +1,43 @@
-{% extends 'base.html.twig' %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Login | My Choice HRT</title>
+        <link rel="icon" href="{{ asset('images/favicon.ico') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{ encore_entry_link_tags('login') }}
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <div class="login-hover card">
+            <div class="card-body p-4">
+                <form method="post">
+                    <div class="text-center">
+                        <img src="{{ asset('images/logo.png') }}" class="logo rounded img-thumbnail text-center mb-2"
+                             alt="mychoicehrt logo">
+                        <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
+                    </div>
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('login') }}
-{% endblock %}
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
 
-{% block title %}Login{% endblock %}
+                    <label for="inputUsername">Username</label>
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control mb-2"
+                           autocomplete="username" required autofocus>
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control mb-4"
+                           autocomplete="current-password" required>
 
-{% block body %}
-    <div class="login-hover card">
-        <div class="card-body p-4">
-            <form method="post">
-                <div class="text-center">
-                    <img src="{{ asset('images/logo.png') }}" class="logo rounded img-thumbnail text-center mb-2" alt="mychoicehrt logo">
-                    <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
-                </div>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
 
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-
-                <label for="inputUsername">Username</label>
-                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control mb-2" autocomplete="username" required autofocus>
-                <label for="inputPassword">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control mb-4" autocomplete="current-password" required>
-
-                <input type="hidden" name="_csrf_token"
-                       value="{{ csrf_token('authenticate') }}"
-                >
-
-                <div class="d-grid">
-                    <button class="btn btn-primary" type="submit">Sign in</button>
-                </div>
-            </form>
+                    <div class="d-grid">
+                        <button class="btn btn-primary" type="submit">Sign in</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-{% endblock %}
+    </body>
+</html>

@@ -15,6 +15,8 @@ Encore
     //.setManifestKeyPrefix('build/')
 
     .addEntry('login', './assets/login.ts')
+    .addEntry('home', './assets/home.ts')
+    .addEntry('search', './assets/search.ts')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
