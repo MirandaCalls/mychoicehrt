@@ -51,7 +51,6 @@ Encore
 
     .enableSassLoader()
     .enableTypeScriptLoader()
-    .autoProvidejQuery()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher

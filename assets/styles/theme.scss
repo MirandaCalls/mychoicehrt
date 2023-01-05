@@ -10,6 +10,10 @@ html, body {
   height: 100%;
 }
 
+.navbar {
+  box-shadow: 0 0.1rem 0.2rem rgba(0,0,0,0.15),inset 0 -1px 0 rgba(255,255,255,0.15);
+}
+
 .navbar-brand img {
   width: 40px;
 }
@@ -22,4 +26,8 @@ html, body {
 
 .navbar-brand:hover {
   color: $color-dark-blue;
+}
+
+.main-content {
+  margin-top: 1.5rem;
 }
