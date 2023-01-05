@@ -9,14 +9,14 @@
     </head>
     <body>
         <nav class="navbar bg-body-tertiary">
-            <div class="container-fluid">
+            <div class="container">
                 <a class="navbar-brand" href="{{ path('app_home') }}">
                     <img src="{{ asset('images/logo_no_text.png') }}" alt="pill shaped logo with transgender flag colors"/>
                     My Choice HRT
                 </a>
             </div>
         </nav>
-        <div class="container-fluid">
+        <div class="container">
             {% block body %}{% endblock %}
         </div>
         {% block scripts %}{% endblock %}
