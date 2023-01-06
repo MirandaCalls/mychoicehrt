@@ -13,17 +13,19 @@
             <div class="row mt-4">
                 <div class="col-6">
                     {% for clinic in searchResults.results %}
-                        <strong>{{ clinic.name }}</strong>
-                        {% if clinic.description %}
-                            <p>{{ clinic.description }}</p>
-                        {% else %}
-                            <p>No description</p>
-                        {% endif %}
-                        <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
+                        <div class="clinic" data-latitude="{{ clinic.latitude }}" data-longitude="{{ clinic.longitude }}">
+                            <strong>{{ clinic.name }}</strong>
+                            {% if clinic.description %}
+                                <p>{{ clinic.description }}</p>
+                            {% else %}
+                                <p>No description</p>
+                            {% endif %}
+                            <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
+                        </div>
                     {% endfor %}
                 </div>
                 <div class="col-6">
-                    <div id="previewMap" data-origin-lat="{{ searchResults.matchedLocation.latitude }}" data-origin-long="{{ searchResults.matchedLocation.longitude }}"></div>
+                    <div id="previewMap" data-origin-latitude="{{ searchResults.matchedLocation.latitude }}" data-origin-longitude="{{ searchResults.matchedLocation.longitude }}"></div>
                 </div>
             </div>
             <div class="row justify-content-center mt-4">

@@ -52,6 +52,12 @@ Encore
     .enableSassLoader()
     .enableTypeScriptLoader()
 
+    .copyFiles({
+        from: './node_modules/leaflet/dist/images',
+        to: 'images/[path][name].[ext]',
+        pattern: /\.(png|jpg|jpeg)$/
+    })
+
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
     //.enableIntegrityHashes(Encore.isProduction())
