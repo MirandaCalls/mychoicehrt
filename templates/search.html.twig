@@ -12,9 +12,14 @@
             <h3>{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h3>
             <div class="row mt-4">
                 <div class="col-6">
+                    <div class="list-group">
                     {% for clinic in searchResults.results %}
-                        <div class="clinic" data-latitude="{{ clinic.latitude }}" data-longitude="{{ clinic.longitude }}">
-                            <strong>{{ clinic.name }}</strong>
+                        <div class="list-group-item list-group-item-action clinic"
+                             data-index="{{ loop.index }}"
+                             data-latitude="{{ clinic.latitude }}"
+                             data-longitude="{{ clinic.longitude }}"
+                        >
+                            <h5>{{ clinic.name }}</h5>
                             {% if clinic.description %}
                                 <p>{{ clinic.description }}</p>
                             {% else %}
@@ -23,6 +28,7 @@
                             <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
                         </div>
                     {% endfor %}
+                    </div>
                 </div>
                 <div class="col-6">
                     <div id="previewMap"
