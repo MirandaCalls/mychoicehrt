@@ -7,24 +7,34 @@
     <hr>
     {% if searchResults %}
         {% if searchResults.matchedLocation %}
-            <h3>Showing {{ searchResults.totalResults }} results within {{ searchResults.searchRadius }} {{ searchResults.totalResults > 1 ? 'miles' : 'mile' }} of {{ searchResults.matchedLocation.title }}</h3>
-            {% for clinic in searchResults.results %}
-                <strong>{{ clinic.name }}</strong>
-                {% if clinic.description %}
-                    <p>{{ clinic.description }}</p>
-                {% else %}
-                    <p>No description</p>
-                {% endif %}
-                <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
-            {% endfor %}
-
-            {% include 'pagination.html.twig' with {
-                currentFilters: pageFilters,
-                currentPage: searchResults.currentPage,
-                paginationPath: "app_search",
-                lastPage: searchResults.totalPages,
-                showAlwaysFirstAndLast: true
-            } only %}
+            {% set resultPluralized = searchResults.totalResults > 1 ? 'results' : 'result' %}
+            {% set milePluralized = searchResults.totalResults > 1 ? 'miles' : 'mile' %}
+            <h3>{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h3>
+            <div class="row mt-4">
+                <div class="col-6">
+                    {% for clinic in searchResults.results %}
+                        <strong>{{ clinic.name }}</strong>
+                        {% if clinic.description %}
+                            <p>{{ clinic.description }}</p>
+                        {% else %}
+                            <p>No description</p>
+                        {% endif %}
+                        <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
+                    {% endfor %}
+                </div>
+                <div class="col-6">
+                    <div id="previewMap" data-origin-lat="{{ searchResults.matchedLocation.latitude }}" data-origin-long="{{ searchResults.matchedLocation.longitude }}"></div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                {% include 'pagination.html.twig' with {
+                    currentFilters: pageFilters,
+                    currentPage: searchResults.currentPage,
+                    paginationPath: "app_search",
+                    lastPage: searchResults.totalPages,
+                    showAlwaysFirstAndLast: true
+                } only %}
+            </div>
         {% else %}
             <p>No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
         {% endif %}

@@ -1,1 +1,7 @@
 @import '../theme';
+@import '~leaflet/dist/leaflet';
+
+#previewMap {
+  min-height: 500px;
+  height: 100%;
+}
