@@ -17,8 +17,13 @@ $(() => {
    const searchRadius = previewMapDiv.data('search-radius');
 
    const map = renderMap(mapId, originLatitude, originLongitude);
-   plotSearchRadius(map, [originLatitude, originLongitude], searchRadius);
+   const searchRadiusOverlay = plotSearchRadius(map, [originLatitude, originLongitude], searchRadius);
    const markers = plotClinicMarkers(map);
+
+   const overlays = {
+      'Search Radius': searchRadiusOverlay,
+   };
+   leaflet.control.layers({}, overlays).addTo(map);
 
    $('.clinic').on('click', (evt: ClickEvent) => {
       onClinicTap(evt, map, markers);
@@ -29,7 +34,7 @@ function renderMap(mapId: string, centerLatitude: number, centerLongitude: numbe
    const map = leaflet.map(mapId);
    map.setView([centerLatitude, centerLongitude], 13);
    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
+      maxZoom: 20,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
    }).addTo(map);
    return map;
@@ -62,9 +67,10 @@ function plotClinicMarkers(map: Map): MarkersHashMap {
 function plotSearchRadius(map: Map, coordinate: LatLngExpression, searchRadius: number): Circle {
    const circle = leaflet.circle(coordinate, {
       radius: searchRadius * METERS_IN_MILE,
-      fillOpacity: 0.15,
+      fillOpacity: 0.10,
    });
-   circle.addTo(map);
+   const layer = circle.addTo(map);
+   layer.addTo(map);
    return circle;
 }
 
