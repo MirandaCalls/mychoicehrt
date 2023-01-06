@@ -19,13 +19,16 @@
                              data-latitude="{{ clinic.latitude }}"
                              data-longitude="{{ clinic.longitude }}"
                         >
-                            <h5>{{ clinic.name }}</h5>
+                            <div class="d-flex justify-content-between">
+                                <h5>{{ clinic.name }}</h5>
+                                {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
+                                <small class="clinic__mile-text">{{ distance }} {{ distance > 1 ? 'miles' : 'mile' }}</small>
+                            </div>
                             {% if clinic.description %}
                                 <p>{{ clinic.description }}</p>
                             {% else %}
                                 <p>No description</p>
                             {% endif %}
-                            <p>{{ distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round }} miles away</p>
                         </div>
                     {% endfor %}
                     </div>
