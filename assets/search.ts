@@ -1,53 +1,81 @@
 import * as $ from 'jquery';
 import * as leaflet from 'leaflet';
-import {LatLngExpression, Map} from "leaflet";
+import {Circle, LatLngExpression, Map, Marker} from "leaflet";
 import './styles/pages/search.scss';
 import initSearchFormHandlers from './searchForm';
+import ClickEvent = JQuery.ClickEvent;
 
 const METERS_IN_MILE = 1609.344;
 
 $(() => {
    initSearchFormHandlers();
 
-   const previewMapDiv = $('#previewMap');
+   const mapId = 'previewMap';
+   const previewMapDiv = $('#' + mapId);
    const originLatitude = previewMapDiv.data('origin-latitude');
    const originLongitude = previewMapDiv.data('origin-longitude');
    const searchRadius = previewMapDiv.data('search-radius');
 
-   const map = leaflet.map('previewMap');
-   map.setView([originLatitude, originLongitude], 13);
+   const map = renderMap(mapId, originLatitude, originLongitude);
+   plotSearchRadius(map, [originLatitude, originLongitude], searchRadius);
+   const markers = plotClinicMarkers(map);
+
+   $('.clinic').on('click', (evt: ClickEvent) => {
+      onClinicTap(evt, map, markers);
+   });
+});
+
+function renderMap(mapId: string, centerLatitude: number, centerLongitude: number): Map {
+   const map = leaflet.map(mapId);
+   map.setView([centerLatitude, centerLongitude], 13);
    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
    }).addTo(map);
+   return map;
+}
 
-   plotSearchRadius(map, [originLatitude, originLongitude], searchRadius);
-   plotClinics(map);
-});
-
-function plotClinics(map: Map) {
+function plotClinicMarkers(map: Map): MarkersHashMap {
    const icon = leaflet.icon({
       iconUrl: '/build/images/marker-icon.png',
    });
 
+   const markers: MarkersHashMap = {};
    const markerCoords: LatLngExpression[] = [];
-   const clinics = $('.clinic');
-   clinics.each((index: number, ele: HTMLElement) => {
+   $('.clinic').each((index: number, ele: HTMLElement) => {
       const clinic = $(ele);
+      const clinicIndex = clinic.data('index');
       const latitude = clinic.data('latitude');
       const longitude = clinic.data('longitude');
 
       markerCoords.push([latitude, longitude]);
-      leaflet.marker([latitude, longitude], {icon: icon}).addTo(map);
+
+      const marker = leaflet.marker([latitude, longitude], {icon: icon});
+      marker.addTo(map);
+      markers[clinicIndex] = marker;
    });
 
    map.fitBounds(leaflet.latLngBounds(markerCoords));
+   return markers;
 }
 
-function plotSearchRadius(map: Map, coordinate: LatLngExpression, searchRadius: number) {
+function plotSearchRadius(map: Map, coordinate: LatLngExpression, searchRadius: number): Circle {
    const circle = leaflet.circle(coordinate, {
       radius: searchRadius * METERS_IN_MILE,
       fillOpacity: 0.15,
    });
    circle.addTo(map);
+   return circle;
+}
+
+function onClinicTap(evt: ClickEvent, map: Map, markers: MarkersHashMap) {
+   const clinic = $(evt.currentTarget);
+   const clinicIndex = clinic.data('index');
+
+   const marker = markers[clinicIndex];
+   map.flyTo(marker.getLatLng(), 16);
+}
+
+interface MarkersHashMap {
+   [index: string]: Marker;
 }
