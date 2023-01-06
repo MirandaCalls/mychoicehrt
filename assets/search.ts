@@ -30,20 +30,24 @@ function plotClinics(map: Map) {
       iconUrl: '/build/images/marker-icon.png',
    });
 
+   const markerCoords: LatLngExpression[] = [];
    const clinics = $('.clinic');
    clinics.each((index: number, ele: HTMLElement) => {
       const clinic = $(ele);
       const latitude = clinic.data('latitude');
       const longitude = clinic.data('longitude');
 
+      markerCoords.push([latitude, longitude]);
       leaflet.marker([latitude, longitude], {icon: icon}).addTo(map);
    });
+
+   map.fitBounds(leaflet.latLngBounds(markerCoords));
 }
 
 function plotSearchRadius(map: Map, coordinate: LatLngExpression, searchRadius: number) {
    const circle = leaflet.circle(coordinate, {
       radius: searchRadius * METERS_IN_MILE,
+      fillOpacity: 0.15,
    });
    circle.addTo(map);
-   map.fitBounds(circle.getBounds());
 }
