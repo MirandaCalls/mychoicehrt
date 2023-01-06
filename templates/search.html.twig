@@ -25,7 +25,11 @@
                     {% endfor %}
                 </div>
                 <div class="col-6">
-                    <div id="previewMap" data-origin-latitude="{{ searchResults.matchedLocation.latitude }}" data-origin-longitude="{{ searchResults.matchedLocation.longitude }}"></div>
+                    <div id="previewMap"
+                         data-origin-latitude="{{ searchResults.matchedLocation.latitude }}"
+                         data-origin-longitude="{{ searchResults.matchedLocation.longitude }}"
+                         data-search-radius="{{ searchResults.searchRadius }}"
+                    ></div>
                 </div>
             </div>
             <div class="row justify-content-center mt-4">
