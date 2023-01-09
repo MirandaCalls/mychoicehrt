@@ -3,15 +3,18 @@
   border-radius: 10rem;
 }
 
+.right-divider {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+}
+
 @media(max-width: 992px) {
   .search-form {
     border-radius: 20px;
   }
+
+  .right-divider {
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
 }
 
-.right-divider::after {
-  content: " ";
-  width: 1px;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.125);
-}
