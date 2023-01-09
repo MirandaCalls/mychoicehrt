@@ -6,13 +6,12 @@
     {% include 'search-form.html.twig' with {
         searchForm: searchForm
     } only %}
-    <hr>
     {% if searchResults %}
         {% if searchResults.matchedLocation %}
             {% set resultPluralized = searchResults.totalResults > 1 ? 'results' : 'result' %}
             {% set milePluralized = searchResults.totalResults > 1 ? 'miles' : 'mile' %}
-            <h3>{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h3>
-            <div class="row mt-4">
+            <h3 class="mt-4">{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h3>
+            <div class="row">
                 <div class="col-6">
                     <div class="list-group">
                     {% for clinic in searchResults.results %}
@@ -53,7 +52,7 @@
                 } only %}
             </div>
         {% else %}
-            <p>No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
+            <p class="mt-4">No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
         {% endif %}
     {% endif %}
 {% endblock %}
