@@ -28,7 +28,6 @@ class SearchFormType extends AbstractType
     {
         $builder
             ->add('countryCode', type: ChoiceType::class, options: [
-                'label' => 'Country',
                 'required' => true,
                 'choices' => $this->loadCountries(),
                 'preferred_choices' => ['US'],
@@ -37,9 +36,7 @@ class SearchFormType extends AbstractType
                 ],
             ])
             ->add('searchType', type: ChoiceType::class, options: [
-                'label' => 'Search using',
                 'required' => true,
-                'expanded' => true,
                 'multiple' => false,
                 'choices' => [
                     'City' => 'city',
@@ -54,17 +51,18 @@ class SearchFormType extends AbstractType
                 ],
             ])
             ->add('searchText', options: [
-                'label' => 'Location',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
                 ],
+                'attr' => [
+                    'placeholder' => 'Location'
+                ],
             ])
             ->add('searchRadius', type: NumberType::class, options: [
-                'label' => 'Search Radius (miles)',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Automatically Choose',
+                    'placeholder' => 'Radius (miles)',
                 ],
             ])
             ->add('page', type: HiddenType::class, options: [

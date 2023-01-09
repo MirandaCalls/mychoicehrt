@@ -1,0 +1,9 @@
+.search-form {
+  border-radius: 10rem;
+}
+
+@media(max-width: 960px) {
+  .search-form {
+    border-radius: 20px;
+  }
+}

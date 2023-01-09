@@ -3,7 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    {{ form(searchForm) }}
+    <div class="row">
+        <div class="col-xl-12">
+            <h3>Search for care</h3>
+            {% include 'search-form.html.twig' with {
+                searchForm: searchForm
+            } only %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}

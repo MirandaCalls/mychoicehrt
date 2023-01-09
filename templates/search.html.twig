@@ -3,7 +3,9 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
-    {{ form(searchForm) }}
+    {% include 'search-form.html.twig' with {
+        searchForm: searchForm
+    } only %}
     <hr>
     {% if searchResults %}
         {% if searchResults.matchedLocation %}
