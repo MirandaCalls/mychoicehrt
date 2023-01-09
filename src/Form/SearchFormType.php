@@ -68,7 +68,9 @@ class SearchFormType extends AbstractType
             ->add('page', type: HiddenType::class, options: [
                 'required' => false,
             ])
-            ->add('submit', type: SubmitType::class)
+            ->add('submit', type: SubmitType::class, options: [
+                'label' => 'Search',
+            ])
         ;
     }
 
