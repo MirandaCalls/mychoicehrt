@@ -53,7 +53,7 @@
                 } only %}
             </div>
         {% else %}
-            <p class="mt-4">No {{ formData.searchType == 'city' ? 'cities' : 'postal codes' }} found for {{ formData.searchText }}</p>
+            <p class="mt-4">No {{ pageFilters.searchType == 'city' ? 'cities' : 'postal codes' }} found matching "{{ pageFilters.searchText }}"</p>
         {% endif %}
     {% endif %}
 {% endblock %}
