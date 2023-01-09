@@ -3,6 +3,7 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
+    <h2>Search for care</h2>
     {% include 'search-form.html.twig' with {
         searchForm: searchForm
     } only %}
@@ -10,7 +11,7 @@
         {% if searchResults.matchedLocation %}
             {% set resultPluralized = searchResults.totalResults > 1 ? 'results' : 'result' %}
             {% set milePluralized = searchResults.totalResults > 1 ? 'miles' : 'mile' %}
-            <h3 class="mt-4">{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h3>
+            <h4 class="mt-4">{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h4>
             <div class="row">
                 <div class="col-6">
                     <div class="list-group">

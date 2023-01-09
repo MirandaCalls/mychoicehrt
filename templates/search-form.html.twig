@@ -5,13 +5,13 @@ Parameters:
 <div class="search-form p-3 p-lg-1 ps-lg-4">
     {{ form_start(searchForm) }}
     <div class="row">
-        <div class="d-flex align-items-center col-lg-3">
+        <div class="d-flex align-items-center right-divider col-lg-3">
             {{ form_widget(searchForm.countryCode, {'attr': {'class': 'border-0 shadow-0'}}) }}
         </div>
-        <div class="d-flex align-items-center col-lg-2">
+        <div class="d-flex align-items-center right-divider col-lg-2">
             {{ form_widget(searchForm.searchRadius, {'attr': {'class': 'border-0 shadow-0'}}) }}
         </div>
-        <div class="d-flex align-items-center col-lg-2">
+        <div class="d-flex align-items-center right-divider col-lg-2">
             {{ form_widget(searchForm.searchType, {'attr': {'class': 'border-0 shadow-0'}}) }}
         </div>
         <div class="d-flex align-items-center col-lg-3">

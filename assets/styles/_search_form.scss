@@ -8,3 +8,10 @@
     border-radius: 20px;
   }
 }
+
+.right-divider::after {
+  content: " ";
+  width: 1px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.125);
+}
