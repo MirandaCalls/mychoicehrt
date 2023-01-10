@@ -38,6 +38,9 @@
                                 {% else %}
                                     <p>No description</p>
                                 {% endif %}
+                                {% if clinic.dataSource == "erinReed" %}
+                                    <span class="badge text-bg-secondary">Informed Consent</span>
+                                {% endif %}
                             </div>
                             <div class="card-footer d-flex justify-content-between align-items-center">
                                 <small class="text-muted text-uppercase">Directions</small>
