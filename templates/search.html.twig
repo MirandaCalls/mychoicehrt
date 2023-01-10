@@ -29,7 +29,7 @@
                         >
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
-                                    <h5>{{ clinic.name }}</h5>
+                                    <h5 class="clinic-name">{{ clinic.name }}</h5>
                                     {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
                                     <small class="clinic__mile-text">{{ distance }} {{ distance > 1 ? 'miles' : 'mile' }}</small>
                                 </div>

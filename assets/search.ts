@@ -1,9 +1,8 @@
 import * as $ from 'jquery';
 import * as leaflet from 'leaflet';
-import {Circle, LatLngExpression, Map, Marker} from "leaflet";
+import {Circle, LatLngExpression, Map} from "leaflet";
 import './styles/pages/search.scss';
 import initSearchFormHandlers from './searchForm';
-import ClickEvent = JQuery.ClickEvent;
 
 const METERS_IN_MILE = 1609.344;
 
@@ -18,16 +17,12 @@ $(() => {
 
    const map = renderMap(mapId, originLatitude, originLongitude);
    const searchRadiusOverlay = plotSearchRadius(map, [originLatitude, originLongitude], searchRadius);
-   const markers = plotClinicMarkers(map);
+   plotClinicMarkers(map);
 
    const overlays = {
       'Search Radius': searchRadiusOverlay,
    };
    leaflet.control.layers({}, overlays).addTo(map);
-
-   $('.clinic').on('click', (evt: ClickEvent) => {
-      onClinicTap(evt, map, markers);
-   });
 });
 
 function renderMap(mapId: string, centerLatitude: number, centerLongitude: number): Map {
@@ -40,28 +35,35 @@ function renderMap(mapId: string, centerLatitude: number, centerLongitude: numbe
    return map;
 }
 
-function plotClinicMarkers(map: Map): MarkersHashMap {
+function plotClinicMarkers(map: Map) {
    const icon = leaflet.icon({
       iconUrl: '/build/images/marker-icon.png',
+      popupAnchor: [12, 0],
    });
 
-   const markers: MarkersHashMap = {};
    const markerCoords: LatLngExpression[] = [];
    $('.clinic').each((index: number, ele: HTMLElement) => {
       const clinic = $(ele);
-      const clinicIndex = clinic.data('index');
       const latitude = clinic.data('latitude');
       const longitude = clinic.data('longitude');
+      const name = clinic.find('.clinic-name').text();
 
       markerCoords.push([latitude, longitude]);
 
-      const marker = leaflet.marker([latitude, longitude], {icon: icon});
+      const marker = leaflet.marker([latitude, longitude], {
+         icon: icon,
+         title: name,
+      });
+
+      marker.on('click', () => {
+         marker.bindPopup(name);
+         marker.openPopup();
+      });
+
       marker.addTo(map);
-      markers[clinicIndex] = marker;
    });
 
    map.fitBounds(leaflet.latLngBounds(markerCoords));
-   return markers;
 }
 
 function plotSearchRadius(map: Map, coordinate: LatLngExpression, searchRadius: number): Circle {
@@ -72,16 +74,4 @@ function plotSearchRadius(map: Map, coordinate: LatLngExpression, searchRadius: 
    const layer = circle.addTo(map);
    layer.addTo(map);
    return circle;
-}
-
-function onClinicTap(evt: ClickEvent, map: Map, markers: MarkersHashMap) {
-   const clinic = $(evt.currentTarget);
-   const clinicIndex = clinic.data('index');
-
-   const marker = markers[clinicIndex];
-   map.flyTo(marker.getLatLng(), 16);
-}
-
-interface MarkersHashMap {
-   [index: string]: Marker;
 }
