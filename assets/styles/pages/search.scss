@@ -17,8 +17,16 @@
   }
 }
 
-.clinic:hover {
-  cursor: pointer;
+.bg-openstreetmaps {
+  background-color: #7ebc6f !important;
+}
+
+.bg-googlemaps {
+  background-color: rgb(26,115,232) !important;
+}
+
+.clinic:not(:last-child) {
+  margin-bottom: 10px;
 }
 
 .clinic__mile-text {

@@ -21,26 +21,39 @@
                     ></div>
                 </div>
                 <div class="col-lg-6 order-lg-0">
-                    <div class="list-group">
                     {% for clinic in searchResults.results %}
-                        <div class="list-group-item list-group-item-action clinic"
+                        <div class="card clinic"
                              data-index="{{ loop.index }}"
                              data-latitude="{{ clinic.latitude }}"
                              data-longitude="{{ clinic.longitude }}"
                         >
-                            <div class="d-flex justify-content-between">
-                                <h5>{{ clinic.name }}</h5>
-                                {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
-                                <small class="clinic__mile-text">{{ distance }} {{ distance > 1 ? 'miles' : 'mile' }}</small>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5>{{ clinic.name }}</h5>
+                                    {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
+                                    <small class="clinic__mile-text">{{ distance }} {{ distance > 1 ? 'miles' : 'mile' }}</small>
+                                </div>
+                                {% if clinic.description %}
+                                    <p>{{ clinic.description }}</p>
+                                {% else %}
+                                    <p>No description</p>
+                                {% endif %}
                             </div>
-                            {% if clinic.description %}
-                                <p>{{ clinic.description }}</p>
-                            {% else %}
-                                <p>No description</p>
-                            {% endif %}
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                                <small class="text-muted text-uppercase">Directions</small>
+                                <div>
+                                    <a type="button" class="btn btn-sm text-white bg-openstreetmaps" target="_blank" href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }};{{ clinic.latitude }},{{ clinic.longitude }}">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                        Open Street Maps
+                                    </a>
+                                    <a type="button" class="btn btn-sm text-white bg-googlemaps" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }}&destination={{ clinic.latitude }},{{ clinic.longitude }}&travelmode=driving">
+                                        <i class="fa-brands fa-google"></i>
+                                        Google Maps
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
-                    </div>
                 </div>
             </div>
             <div class="row justify-content-center mt-4">
