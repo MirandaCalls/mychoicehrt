@@ -26,6 +26,9 @@ class Clinic
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $address = null;
+
     #[ORM\Column]
     private ?float $latitude = null;
 
@@ -81,6 +84,18 @@ class Clinic
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
@@ -181,4 +196,5 @@ class Clinic
     {
         return $this->name;
     }
+
 }

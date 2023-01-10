@@ -29,7 +29,7 @@ class GeoCity
     #[ORM\Column]
     private ?float $longitude = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $state = null;
 
     #[ORM\Column(length: 2)]
