@@ -62,7 +62,7 @@ class SearchFormType extends AbstractType
             ->add('searchRadius', type: NumberType::class, options: [
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Radius (miles)',
+                    'placeholder' => 'Search Radius (miles)',
                 ],
             ])
             ->add('page', type: HiddenType::class, options: [

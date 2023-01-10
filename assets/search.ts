@@ -54,9 +54,9 @@ function plotClinicMarkers(map: Map) {
          icon: icon,
          title: name,
       });
+      marker.bindPopup(name);
 
       marker.on('click', () => {
-         marker.bindPopup(name);
          marker.openPopup();
       });
 
