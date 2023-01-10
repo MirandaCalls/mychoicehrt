@@ -37,17 +37,20 @@
                                     <p>{{ clinic.description }}</p>
                                 {% endif %}
                                 {% if clinic.dataSource == "erinReed" %}
-                                    <span class="badge text-bg-secondary">Informed Consent</span>
+                                    <span class="badge bg-secondary text-black-50">
+                                        <i class="fa-solid fa-check"></i>
+                                        Informed Consent
+                                    </span>
                                 {% endif %}
                             </div>
                             <div class="card-footer d-flex justify-content-between align-items-center">
                                 <small class="text-muted text-uppercase">Directions</small>
                                 <div>
-                                    <a type="button" class="btn btn-sm text-white bg-openstreetmaps" target="_blank" href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }};{{ clinic.latitude }},{{ clinic.longitude }}">
+                                    <a type="button" class="btn btn-sm btn-primary" target="_blank" href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }};{{ clinic.latitude }},{{ clinic.longitude }}">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                         Open Street Maps
                                     </a>
-                                    <a type="button" class="btn btn-sm text-white bg-googlemaps" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }}&destination={{ clinic.latitude }},{{ clinic.longitude }}&travelmode=driving">
+                                    <a type="button" class="btn btn-sm btn-primary" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }}&destination={{ clinic.latitude }},{{ clinic.longitude }}&travelmode=driving">
                                         <i class="fa-brands fa-google"></i>
                                         Google Maps
                                     </a>

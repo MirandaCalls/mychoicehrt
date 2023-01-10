@@ -1,7 +1,8 @@
+@import '_variables';
 @import '~bootstrap/scss/functions';
 
-// Overrides to bootstrap variables should go here
-$primary: #004D7C;
+$primary: $color-pink;
+$secondary: $color-blue;
 
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/maps';

@@ -9,20 +9,13 @@
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
+  border-radius: $border-radius;
 }
 
 @media(max-width: 992px) {
   #previewMap {
     max-height: 400px;
   }
-}
-
-.bg-openstreetmaps {
-  background-color: #7ebc6f !important;
-}
-
-.bg-googlemaps {
-  background-color: rgb(26,115,232) !important;
 }
 
 .clinic:not(:last-child) {

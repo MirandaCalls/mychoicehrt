@@ -11,6 +11,10 @@ html, body {
   height: 100%;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  color: $color-dark-blue;
+}
+
 .navbar {
   box-shadow: 0 0.1rem 0.2rem rgba(0,0,0,0.15),inset 0 -1px 0 rgba(255,255,255,0.15);
 }
