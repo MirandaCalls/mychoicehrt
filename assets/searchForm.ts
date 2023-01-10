@@ -9,8 +9,8 @@ function updateSearchTextPlaceholder() {
     let searchByCity = $('#searchType option:selected').val() === 'city';
     let searchText = $('#searchText');
     if (searchByCity) {
-        searchText.attr('placeholder', 'Example: Chicago, Illinois');
+        searchText.attr('placeholder', 'City, State');
     } else {
-        searchText.attr('placeholder', 'Example: 60601');
+        searchText.attr('placeholder', 'Postal Code');
     }
 }

@@ -39,8 +39,8 @@ class SearchFormType extends AbstractType
                 'required' => true,
                 'multiple' => false,
                 'choices' => [
-                    'City' => 'city',
-                    'Postal Code' => 'postal',
+                    'Search by City' => 'city',
+                    'Search by Postal Code' => 'postal',
                 ],
                 'constraints' => [
                     new NotBlank(message: 'This field is required.'),

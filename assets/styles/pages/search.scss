@@ -3,8 +3,18 @@
 @import '~leaflet/dist/leaflet';
 
 #previewMap {
-  min-height: 500px;
+  min-height: 300px;
+  max-height: 100vh;
   height: 100%;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+
+@media(max-width: 992px) {
+  #previewMap {
+    max-height: 400px;
+  }
 }
 
 .clinic:hover {
