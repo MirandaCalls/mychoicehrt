@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Clinic;
+use App\HereMaps\Client;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,10 +18,26 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ClinicCrudController extends AbstractCrudController
 {
+
+    private AdminUrlGenerator $adminUrlGenerator;
+    private Client $hereClient;
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(
+        AdminUrlGenerator $adminUrlGenerator,
+        Client $hereClient,
+        EntityManagerInterface $entityManager,
+    ) {
+        $this->adminUrlGenerator = $adminUrlGenerator;
+        $this->hereClient = $hereClient;
+        $this->entityManager = $entityManager;
+    }
+
     public static function getEntityFqcn(): string
     {
         return Clinic::class;
@@ -29,10 +47,18 @@ class ClinicCrudController extends AbstractCrudController
     {
         $openMapsAction = Action::new('openMaps', 'OpenStreetMap', 'fa-solid fa-link')
             /* @see self::redirectToOpenStreetMap() */
-            ->linkToCrudAction('redirectToOpenMaps')
+            ->linkToCrudAction('redirectToOpenStreetMap')
         ;
 
-        return $actions->add(Action::EDIT, $openMapsAction);
+        $addHereMapsDataAction = Action::new('addHereMapsData', 'Add Here Maps Data', 'fa-solid fa-cloud-arrow-down')
+            /* @see self::addHereMapsData() */
+            ->linkToCrudAction('addHereMapsData')
+        ;
+
+        return $actions
+            ->add(Action::EDIT, $openMapsAction)
+            ->add(Action::EDIT, $addHereMapsDataAction)
+        ;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -124,6 +150,44 @@ class ClinicCrudController extends AbstractCrudController
 
         $openMapsUrl = 'https://www.openstreetmap.org/?mlat=' . $clinic->getLatitude() . '&mlon=' . $clinic->getLongitude();
         return $this->redirect($openMapsUrl);
+    }
+
+    public function addHereMapsData(AdminContext $context): RedirectResponse
+    {
+        /* @var ?Clinic $clinic */
+        $clinic = $context->getEntity()->getInstance();
+        if (!$clinic) {
+            return $this->redirect($context->getReferrer());
+        }
+
+        $editUrl = $this->adminUrlGenerator
+            ->setController(self::class)
+            ->setAction(Crud::PAGE_EDIT)
+            ->setEntityId($clinic->getId())
+            ->generateUrl()
+        ;
+
+        try {
+            $locations = $this->hereClient->discover(
+                $clinic->getName(),
+                $clinic->getLatitude(),
+                $clinic->getLongitude(),
+            );
+        } catch(\Throwable $e) {
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirect($editUrl);
+        }
+
+        if (count($locations['items']) === 0) {
+            $this->addFlash('error', 'No matching location found');
+            return $this->redirect($editUrl);
+        }
+
+        $clinic->setAddress($locations['items'][0]['address']['label']);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Successfully added data from Here maps');
+        return $this->redirect($editUrl);
     }
 
 }
