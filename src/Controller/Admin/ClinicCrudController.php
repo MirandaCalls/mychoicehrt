@@ -27,8 +27,8 @@ class ClinicCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $openMapsAction = Action::new('openMaps', 'Open Map')
-            /* @see self::redirectToOpenMaps() */
+        $openMapsAction = Action::new('openMaps', 'OpenStreetMap', 'fa-solid fa-link')
+            /* @see self::redirectToOpenStreetMap() */
             ->linkToCrudAction('redirectToOpenMaps')
         ;
 
@@ -56,6 +56,7 @@ class ClinicCrudController extends AbstractCrudController
     {
         $name = TextField::new('name');
         $description = TextareaField::new('description');
+        $address = TextField::new('address');
         $latitude = NumberField::new('latitude')->setColumns(5);
         $longitude = NumberField::new('longitude')->setColumns(5);
         $published = BooleanField::new('published')
@@ -75,6 +76,7 @@ class ClinicCrudController extends AbstractCrudController
             yield FormField::addPanel('Details');
             yield $name;
             yield $description;
+            yield $address;
             yield $latitude;
             yield $longitude;
 
@@ -86,6 +88,7 @@ class ClinicCrudController extends AbstractCrudController
             yield $published;
             yield $name;
             yield $description;
+            yield $address;
             yield $latitude;
             yield $longitude;
         } elseif (Crud::PAGE_DETAIL === $pageName) {
@@ -93,6 +96,7 @@ class ClinicCrudController extends AbstractCrudController
             yield FormField::addPanel('Details');
             yield $name;
             yield $description;
+            yield $address;
             yield $latitude;
             yield $longitude;
 
@@ -110,7 +114,7 @@ class ClinicCrudController extends AbstractCrudController
         }
     }
 
-    public function redirectToOpenMaps(AdminContext $context): RedirectResponse
+    public function redirectToOpenStreetMap(AdminContext $context): RedirectResponse
     {
         /* @var ?Clinic $clinic */
         $clinic = $context->getEntity()->getInstance();
@@ -121,4 +125,5 @@ class ClinicCrudController extends AbstractCrudController
         $openMapsUrl = 'https://www.openstreetmap.org/?mlat=' . $clinic->getLatitude() . '&mlon=' . $clinic->getLongitude();
         return $this->redirect($openMapsUrl);
     }
+
 }
