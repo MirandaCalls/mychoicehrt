@@ -76,6 +76,7 @@ class ClinicRepository extends ServiceEntityRepository
         $rsm->addFieldResult('c', 'data_source', 'dataSource');
         $rsm->addFieldResult('c', 'name', 'name');
         $rsm->addFieldResult('c', 'description', 'description');
+        $rsm->addFieldResult('c', 'address', 'address');
         $rsm->addFieldResult('c', 'latitude', 'latitude');
         $rsm->addFieldResult('c', 'longitude', 'longitude');
         $rsm->addFieldResult('c', 'location', 'location');
