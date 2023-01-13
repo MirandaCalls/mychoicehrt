@@ -56,6 +56,30 @@
             "config/packages/jsor_doctrine_postgis.yaml"
         ]
     },
+    "meteo-concept/hcaptcha-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "e94efaa6cd60c87dc9cc6de56b333a1754187d1e"
+        },
+        "files": [
+            "config/packages/meteo_concept_h_captcha.yaml"
+        ]
+    },
+    "nyholm/psr7": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "0cd4d2d0e7f646fda75f9944f747a56e6ed13d4c"
+        },
+        "files": [
+            "config/packages/nyholm_psr7.yaml"
+        ]
+    },
     "symfony/console": {
         "version": "6.2",
         "recipe": {

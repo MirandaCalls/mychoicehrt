@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\FeedbackMessage;
+use MeteoConcept\HCaptchaBundle\Form\HCaptchaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,6 +21,7 @@ class FeedbackType extends AbstractType
                 'choices' => FeedbackMessage::FEEDBACK_TYPES,
             ])
             ->add('messageText')
+            ->add('captcha', type: HCaptchaType::class)
             ->add('submit', type: SubmitType::class, options: [
                 'label' => 'Send',
             ])
