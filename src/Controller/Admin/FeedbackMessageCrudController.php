@@ -38,7 +38,9 @@ class FeedbackMessageCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield EmailField::new('email');
-        yield ChoiceField::new('feedbackType');
+        yield ChoiceField::new('feedbackType')
+            ->setChoices(FeedbackMessage::FEEDBACK_TYPES)
+        ;
         yield TextareaField::new('messageText');
         yield DateTimeField::new('submittedOn')->setFormTypeOption('disabled', true);
     }
