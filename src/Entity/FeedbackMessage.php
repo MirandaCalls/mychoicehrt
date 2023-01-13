@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\FeedbackMessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FeedbackMessageRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class FeedbackMessage
 {
     public const FEEDBACK_TYPE_OTHER = 0;
@@ -27,12 +29,15 @@ class FeedbackMessage
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     private ?string $email = null;
 
     #[ORM\Column]
     private ?int $feedbackType = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $messageText = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -89,5 +94,12 @@ class FeedbackMessage
         $this->submittedOn = $submittedOn;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function onRecordCreate()
+    {
+        $now = new \DateTime();
+        $this->submittedOn = $now;
     }
 }

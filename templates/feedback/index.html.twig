@@ -1,8 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FeedbackController!{% endblock %}
+{% block title %}Feedback{% endblock %}
 
 {% block body %}
+    <h2>Give your feedback</h2>
+
+    {% for message in app.flashes('notification') %}
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     {{ form(feedbackForm) }}
 {% endblock %}
 

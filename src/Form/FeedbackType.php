@@ -20,7 +20,9 @@ class FeedbackType extends AbstractType
                 'choices' => FeedbackMessage::FEEDBACK_TYPES,
             ])
             ->add('messageText')
-            ->add('submit', type: SubmitType::class)
+            ->add('submit', type: SubmitType::class, options: [
+                'label' => 'Send',
+            ])
         ;
     }
 
