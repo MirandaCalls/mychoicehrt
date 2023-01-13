@@ -29,3 +29,7 @@ $secondary: $color-blue;
 @import '~bootstrap/scss/pagination';
 @import '~bootstrap/scss/badge';
 @import '~bootstrap/scss/button-group';
+
+.btn.btn-primary {
+  color: rgb(119, 40, 56);
+}
