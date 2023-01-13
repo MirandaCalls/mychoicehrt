@@ -9,6 +9,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FeedbackMessageRepository::class)]
 class FeedbackMessage
 {
+    public const FEEDBACK_TYPE_OTHER = 0;
+    public const FEEDBACK_TYPE_BUG = 1;
+    public const FEEDBACK_TYPE_BAD_DATA = 2;
+    public const FEEDBACK_TYPE_NEW_CLINIC = 3;
+
+    public const FEEDBACK_TYPES = [
+        'Report an Issue or Bug' => self::FEEDBACK_TYPE_BUG,
+        'Report Inaccurate Data' => self::FEEDBACK_TYPE_BAD_DATA,
+        'Request to Add a Clinic or Provider' => self::FEEDBACK_TYPE_NEW_CLINIC,
+        'Other' => self::FEEDBACK_TYPE_OTHER,
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

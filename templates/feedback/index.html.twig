@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FeedbackController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ '/Users/capnreynolds/Developer/PHP/mychoicehrt/src/Controller/FeedbackController.php'|file_link(0) }}">src/Controller/FeedbackController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/Users/capnreynolds/Developer/PHP/mychoicehrt/templates/feedback/index.html.twig'|file_link(0) }}">templates/feedback/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('feedback') }}
+{% endblock %}
