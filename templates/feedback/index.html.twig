@@ -3,15 +3,17 @@
 {% block title %}Feedback{% endblock %}
 
 {% block body %}
-    <h2>Give your feedback</h2>
+    <div class="container mt-4">
+        <h2>Give your feedback</h2>
 
-    {% for message in app.flashes('notification') %}
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ message }}
-        </div>
-    {% endfor %}
+        {% for message in app.flashes('notification') %}
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-    {{ form(feedbackForm) }}
+        {{ form(feedbackForm) }}
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
