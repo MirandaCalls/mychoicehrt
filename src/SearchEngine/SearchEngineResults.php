@@ -4,7 +4,7 @@ namespace App\SearchEngine;
 
 use App\Entity\Clinic;
 
-readonly class SearchEngineResults
+class SearchEngineResults
 {
     public function __construct(
         /**
