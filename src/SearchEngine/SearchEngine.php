@@ -58,7 +58,12 @@ class SearchEngine
         if ($radius === null) {
             list($radius, $totalResults) = $this->calculateOptimalSearchRadius($latitude, $longitude);
         } else {
-            $totalResults = $this->clinics->countClinicsWithinRadius($latitude, $longitude, $radius);
+            $totalResults = $this->clinics->countClinicsWithinRadius(
+                $latitude,
+                $longitude,
+                $radius,
+                published: true,
+            );
         }
 
         $page = $params->getPage();
@@ -76,6 +81,7 @@ class SearchEngine
                 $radius,
                 limit: self::RECORDS_LIMIT,
                 offset: $offset,
+                published: true,
             );
         }
 
@@ -111,7 +117,8 @@ class SearchEngine
             $count = $this->clinics->countClinicsWithinRadius(
                 $latitude,
                 $longitude,
-                $radius
+                $radius,
+                published: true,
             );
             $attempts++;
         }

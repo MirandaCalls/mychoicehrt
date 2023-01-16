@@ -49,6 +49,7 @@ class ClinicRepository extends ServiceEntityRepository
         float $miles,
         ?int $limit = null,
         ?int $offset = null,
+        ?bool $published = null,
     ) {
         $sql = "
             SELECT
@@ -59,8 +60,16 @@ class ClinicRepository extends ServiceEntityRepository
                 ST_Distance(clinic.location, ST_MakePoint(:centerLong, :centerLat)) as distance
             WHERE
                 distance <= :radius
-            ORDER BY distance
         ";
+
+        if ($published !== null) {
+            $sql .= '
+                AND
+                    published = :published
+            ';
+        }
+
+        $sql .= 'ORDER BY distance ';
 
         if ($limit !== null) {
             $sql .= 'LIMIT :limit ';
@@ -88,6 +97,9 @@ class ClinicRepository extends ServiceEntityRepository
         $query->setParameter('centerLong', $centerLong);
         $query->setParameter('centerLat', $centerLat);
         $query->setParameter('radius', $miles * self::METERS_PER_MILE);
+        if ($published !== null) {
+            $query->setParameter('published', $published);
+        }
         if ($limit !== null) {
             $query->setParameter('limit', $limit);
         }
@@ -104,14 +116,28 @@ class ClinicRepository extends ServiceEntityRepository
         );
     }
 
-    public function countClinicsWithinRadius(float $centerLat, float $centerLong, int $radius): int
-    {
-        return $this->createQueryBuilder('c')
+    public function countClinicsWithinRadius(
+        float $centerLat,
+        float $centerLong,
+        int $radius,
+        ?bool $published = null,
+    ): int {
+        $query = $this->createQueryBuilder('c')
             ->select('count(c.id)')
             ->andWhere('ST_Distance(c.location, ST_MakePoint(:centerLong, :centerLat)) <= :radius')
             ->setParameter('centerLong', $centerLong)
             ->setParameter('centerLat', $centerLat)
             ->setParameter('radius', $radius * self::METERS_PER_MILE)
+        ;
+
+        if ($published !== null) {
+            $query
+                ->andWhere('c.published = :published')
+                ->setParameter('published', $published)
+            ;
+        }
+
+        return $query
             ->getQuery()
             ->getSingleScalarResult()
         ;
