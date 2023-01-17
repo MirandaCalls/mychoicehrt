@@ -187,7 +187,7 @@ class ClinicCrudController extends AbstractCrudController
         $address = $locations['items'][0]['address']['label'];
         $addressParts = explode(', ', $address);
         $levenshtein = new Levenshtein($clinic->getName(), $addressParts[0]);
-        if ($levenshtein->getRelativeDistance() < 0.4) {
+        if ($levenshtein->getRelativeDistance() < 0.6) {
             $this->addFlash('danger', 'No matching location found');
             return $this->redirect($editUrl);
         }
