@@ -6,6 +6,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client {
 
+    public const METERS_PER_MILE = 1609.344;
+
     private HttpClientInterface $httpClient;
     private string $hereApiKey;
 
@@ -25,7 +27,7 @@ class Client {
         $url = 'https://discover.search.hereapi.com/v1/discover?' . http_build_query([
             'lang' => 'en-US',
             'limit' => '1',
-            'at' => $latitude . ',' . $longitude,
+            'in' => 'circle:' . $latitude . ',' . $longitude . ';r=' . (int) (self::METERS_PER_MILE * 0.5),
             'q' => $query,
             'apiKey' => $this->hereApiKey,
         ]);

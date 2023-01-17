@@ -19,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Oefenweb\DamerauLevenshtein\DamerauLevenshtein as Levenshtein;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ClinicCrudController extends AbstractCrudController
@@ -174,16 +175,26 @@ class ClinicCrudController extends AbstractCrudController
                 $clinic->getLongitude(),
             );
         } catch(\Throwable $e) {
-            $this->addFlash('error', $e->getMessage());
+            $this->addFlash('danger', $e->getMessage());
             return $this->redirect($editUrl);
         }
 
         if (count($locations['items']) === 0) {
-            $this->addFlash('error', 'No matching location found');
+            $this->addFlash('danger', 'No matching location found');
             return $this->redirect($editUrl);
         }
 
-        $clinic->setAddress($locations['items'][0]['address']['label']);
+        $address = $locations['items'][0]['address']['label'];
+        $addressParts = explode(', ', $address);
+        $levenshtein = new Levenshtein($clinic->getName(), $addressParts[0]);
+        if ($levenshtein->getRelativeDistance() < 0.4) {
+            $this->addFlash('danger', 'No matching location found');
+            return $this->redirect($editUrl);
+        }
+        unset($addressParts[0]);
+        $address = implode(', ', $addressParts);
+
+        $clinic->setAddress($address);
         $this->entityManager->flush();
 
         $this->addFlash('success', 'Successfully added data from Here maps');
