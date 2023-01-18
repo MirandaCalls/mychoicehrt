@@ -20,6 +20,16 @@ class FeedbackType extends AbstractType
             ->add('feedbackType', type: ChoiceType::class, options: [
                 'choices' => FeedbackMessage::FEEDBACK_TYPES,
             ])
+        ;
+
+        if (!empty($options['linkedClinic'])) {
+            $builder->add('clinic', type: ChoiceType::class, options: [
+                'disabled' => true,
+                'choices' => $options['linkedClinic'],
+            ]);
+        }
+
+        $builder
             ->add('messageText')
             ->add('captcha', type: HCaptchaType::class)
             ->add('submit', type: SubmitType::class, options: [
@@ -32,6 +42,9 @@ class FeedbackType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => FeedbackMessage::class,
+            'linkedClinic' => [],
         ]);
+
+        $resolver->setAllowedTypes('linkedClinic', 'array');
     }
 }

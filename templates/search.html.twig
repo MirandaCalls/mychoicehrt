@@ -31,14 +31,15 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <h5 class="clinic-name">{{ clinic.name }}</h5>
-                                        {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
-                                        <small class="clinic__mile-text">{{ distance }} {{ distance == 1 ? 'mile' : 'miles' }}</small>
+                                        <a class="text-secondary" href="{{ path('app_feedback', { feedbackType: 2, clinicId: clinic.id }) }}">
+                                            <i class="fa-solid fa-circle-exclamation" title="Report issue with this listing"></i>
+                                        </a>
                                     </div>
                                     {% if clinic.address %}
                                         <p class="mb-2">{{ clinic.address }}</p>
                                     {% endif %}
                                     {% if clinic.dataSource == "erinReed" %}
-                                        <span class="badge bg-secondary text-black-50">
+                                        <span class="badge bg-blue text-black-50">
                                             <i class="fa-solid fa-check"></i>
                                             Informed Consent
                                         </span>
@@ -49,7 +50,8 @@
                                     {% endif %}
                                 </div>
                                 <div class="card-footer d-flex justify-content-between align-items-center">
-                                    <small class="text-muted text-uppercase">Directions</small>
+                                    {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
+                                    <small class="text-muted text-uppercase">{{ distance }} {{ distance == 1 ? 'mile' : 'miles' }}</small>
                                     <div>
                                         <a type="button" class="btn btn-sm btn-primary" target="_blank" href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route={{ searchResults.matchedLocation.latitude }},{{ searchResults.matchedLocation.longitude }};{{ clinic.latitude }},{{ clinic.longitude }}">
                                             <i class="fa-solid fa-magnifying-glass"></i>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FeedbackMessage;
 use App\Form\FeedbackType;
+use App\Repository\ClinicRepository;
 use App\Repository\FeedbackMessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class FeedbackController extends AbstractController
 {
     private FeedbackMessageRepository $feedback;
+    private ClinicRepository $clinics;
     private NotifierInterface $notifier;
 
     public function __construct(
         FeedbackMessageRepository $feedback,
+        ClinicRepository $clinics,
         NotifierInterface $notifier,
     ) {
         $this->feedback = $feedback;
+        $this->clinics = $clinics;
         $this->notifier = $notifier;
     }
 
@@ -29,13 +33,23 @@ class FeedbackController extends AbstractController
     public function index(Request $req): Response
     {
         $message = new FeedbackMessage();
-        $feedbackType = $req->get('feedbackType');
-        if ($feedbackType && in_array($feedbackType, FeedbackMessage::FEEDBACK_TYPES)) {
-            $message->setFeedbackType($feedbackType);
-        }
-        $message->setMessageText($req->get('messageText', ''));
 
-        $feedbackForm = $this->createForm(FeedbackType::class, $message);
+        $feedbackType = $req->get('feedbackType');
+        $clinicId = $req->get('clinicId');
+        $formOptions = [];
+        if (
+               (int)$feedbackType === FeedbackMessage::FEEDBACK_TYPE_BAD_DATA
+            && $clinicId !== null
+            && $linkedClinic = $this->clinics->find($clinicId)
+        ) {
+            $message->setFeedbackType($feedbackType);
+            $message->setClinic($linkedClinic);
+            $formOptions['linkedClinic'] = [
+                $linkedClinic->getName() => $linkedClinic->getId(),
+            ];
+        }
+
+        $feedbackForm = $this->createForm(FeedbackType::class, $message, $formOptions);
         $feedbackForm->handleRequest($req);
 
         if ($feedbackForm->isSubmitted() && $feedbackForm->isValid()) {

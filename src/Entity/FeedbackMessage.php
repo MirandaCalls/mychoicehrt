@@ -43,6 +43,9 @@ class FeedbackMessage
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $submittedOn = null;
 
+    #[ORM\ManyToOne]
+    private ?Clinic $clinic = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,10 +99,23 @@ class FeedbackMessage
         return $this;
     }
 
+    public function getClinic(): ?Clinic
+    {
+        return $this->clinic;
+    }
+
+    public function setClinic(?Clinic $clinic): self
+    {
+        $this->clinic = $clinic;
+
+        return $this;
+    }
+
     #[ORM\PrePersist]
     public function onRecordCreate()
     {
         $now = new \DateTime();
         $this->submittedOn = $now;
     }
+
 }
