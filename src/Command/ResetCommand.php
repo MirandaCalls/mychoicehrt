@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Clinic;
 use App\Entity\DuplicateLink;
+use App\Entity\FeedbackMessage;
 use App\Entity\ImportHash;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -13,10 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:clinics:reset',
-    description: 'Deletes all clinic data from the database',
+    name: 'app:reset',
+    description: 'Dev tool used to reset the application database',
 )]
-class ClinicsResetCommand extends Command
+class ResetCommand extends Command
 {
     private EntityManagerInterface $entityManager;
 
@@ -34,6 +35,7 @@ class ClinicsResetCommand extends Command
             return Command::SUCCESS;
         }
 
+        $this->deleteAllEntries(FeedbackMessage::class);
         $this->deleteAllEntries(DuplicateLink::class);
         $this->deleteAllEntries(ImportHash::class);
         $this->deleteAllEntries(Clinic::class);
