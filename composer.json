@@ -13,7 +13,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
-        "easycorp/easyadmin-bundle": "^4.5",
+        "easycorp/easyadmin-bundle": "^4.x-dev",
         "jsor/doctrine-postgis": "^2.1",
         "meteo-concept/hcaptcha-bundle": "^3.3",
         "mjaschen/phpgeo": "^4.2",
