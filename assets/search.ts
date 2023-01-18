@@ -1,6 +1,7 @@
 import * as $ from 'jquery';
 import * as leaflet from 'leaflet';
-import {Circle, LatLngExpression, Map} from "leaflet";
+import {Circle, LatLngExpression, Map} from 'leaflet';
+import * as bootstrap from 'bootstrap';
 import './styles/pages/search.scss';
 import initSearchFormHandlers from './searchForm';
 
@@ -8,6 +9,9 @@ const METERS_IN_MILE = 1609.344;
 
 $(() => {
    initSearchFormHandlers();
+
+   const tooltipTriggerList = $('[data-bs-toggle="tooltip"]');
+   tooltipTriggerList.each((index, tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
 
    const mapId = 'previewMap';
    const previewMapDiv = $('#' + mapId);

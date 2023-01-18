@@ -19,15 +19,16 @@ $primary: $color-pink;
 @import '~bootstrap/scss/utilities/api';
 
 @import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/badge';
 @import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/button-group';
 @import '~bootstrap/scss/card';
 @import '~bootstrap/scss/forms';
 @import '~bootstrap/scss/list-group';
 @import '~bootstrap/scss/navbar';
 @import '~bootstrap/scss/nav';
 @import '~bootstrap/scss/pagination';
-@import '~bootstrap/scss/badge';
-@import '~bootstrap/scss/button-group';
+@import '~bootstrap/scss/tooltip';
 
 .btn.btn-primary {
   color: rgb(119, 40, 56);
