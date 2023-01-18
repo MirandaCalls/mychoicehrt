@@ -29,6 +29,12 @@ class FeedbackController extends AbstractController
     public function index(Request $req): Response
     {
         $message = new FeedbackMessage();
+        $feedbackType = $req->get('feedbackType');
+        if ($feedbackType && in_array($feedbackType, FeedbackMessage::FEEDBACK_TYPES)) {
+            $message->setFeedbackType($feedbackType);
+        }
+        $message->setMessageText($req->get('messageText', ''));
+
         $feedbackForm = $this->createForm(FeedbackType::class, $message);
         $feedbackForm->handleRequest($req);
 

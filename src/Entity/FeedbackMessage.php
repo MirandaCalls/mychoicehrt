@@ -17,9 +17,9 @@ class FeedbackMessage
     public const FEEDBACK_TYPE_NEW_CLINIC = 3;
 
     public const FEEDBACK_TYPES = [
-        'Report Website Bug' => self::FEEDBACK_TYPE_BUG,
-        'Report Issue with Clinic or Provider' => self::FEEDBACK_TYPE_BAD_DATA,
-        'Request to Add Clinic or Provider' => self::FEEDBACK_TYPE_NEW_CLINIC,
+        'Report website bug' => self::FEEDBACK_TYPE_BUG,
+        'Report issue with listing for clinic/provider' => self::FEEDBACK_TYPE_BAD_DATA,
+        'Request to add listing for clinic/provider' => self::FEEDBACK_TYPE_NEW_CLINIC,
         'Other' => self::FEEDBACK_TYPE_OTHER,
     ];
 
