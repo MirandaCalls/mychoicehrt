@@ -10,8 +10,8 @@
         } only %}
         {% if searchResults %}
             {% if searchResults.matchedLocation %}
-                {% set resultPluralized = searchResults.totalResults > 1 ? 'results' : 'result' %}
-                {% set milePluralized = searchResults.searchRadius > 1 ? 'miles' : 'mile' %}
+                {% set resultPluralized = searchResults.totalResults == 1 ? 'result' : 'results' %}
+                {% set milePluralized = searchResults.searchRadius == 1 ? 'mile' : 'miles' %}
                 <h4 class="mt-4">{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h4>
                 <div class="row">
                     <div class="col-lg-6 order-lg-1 mb-4 mb-lg-0">
@@ -32,7 +32,7 @@
                                     <div class="d-flex justify-content-between">
                                         <h5 class="clinic-name">{{ clinic.name }}</h5>
                                         {% set distance = distance(searchResults.matchedLocation.latitude, searchResults.matchedLocation.longitude, clinic.latitude, clinic.longitude)|round %}
-                                        <small class="clinic__mile-text">{{ distance }} {{ distance > 1 ? 'miles' : 'mile' }}</small>
+                                        <small class="clinic__mile-text">{{ distance }} {{ distance == 1 ? 'mile' : 'miles' }}</small>
                                     </div>
                                     {% if clinic.address %}
                                         <p class="mb-2">{{ clinic.address }}</p>
