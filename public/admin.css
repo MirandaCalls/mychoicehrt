@@ -41,6 +41,7 @@
 .widget-action {
     border-radius: 5px;
     box-shadow: 0px 2px 4px #0000007a;
+    margin-bottom: 20px;
 }
 
 .widget-action__context {
