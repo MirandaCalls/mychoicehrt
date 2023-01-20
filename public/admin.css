@@ -1,6 +1,6 @@
 .widget-info {
     border-radius: 5px;
-    box-shadow: 0px 2px 4px #0000007a;
+    box-shadow: 0 2px 4px #0000007a;
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -40,7 +40,7 @@
 
 .widget-action {
     border-radius: 5px;
-    box-shadow: 0px 2px 4px #0000007a;
+    box-shadow: 0 2px 4px #0000007a;
     margin-bottom: 20px;
 }
 
