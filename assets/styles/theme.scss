@@ -30,11 +30,10 @@ body {
 
 .navbar-brand {
   font-family: 'Rajdhani', sans-serif;
-  color: $color-dark-blue;
   font-size: 1.6rem;
 }
 
-.navbar-brand:hover {
+.navbar-brand, .navbar-brand:hover, .navbar-brand:visited {
   color: $color-dark-blue;
 }
 

@@ -30,6 +30,10 @@ $primary: $color-pink;
 @import '~bootstrap/scss/pagination';
 @import '~bootstrap/scss/tooltip';
 
+a, a:hover, a:visited {
+  color: $blue;
+}
+
 .btn.btn-primary {
   color: rgb(119, 40, 56);
 }
