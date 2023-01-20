@@ -106,21 +106,18 @@ class SearchEngine
     {
         $radius = 5;
         $count = 0;
-        $attempts = 0;
         while($count < self::RECORDS_LIMIT) {
-            if ($attempts === 5) {
-                // Double the search radius 5 times before giving up
+            if ($radius >= 500) {
                 break;
             }
 
-            $radius = $radius * 2;
+            $radius = min($radius * 2, 500);
             $count = $this->clinics->countClinicsWithinRadius(
                 $latitude,
                 $longitude,
                 $radius,
                 published: true,
             );
-            $attempts++;
         }
 
         return [$radius, $count];
