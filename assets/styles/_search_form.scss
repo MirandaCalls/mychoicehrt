@@ -12,21 +12,9 @@
 .search-form {
   background-color: #fff;
   box-shadow: 0 2px 4px #0000007a;
-  border-radius: 10rem;
+  border-radius: 20px;
 }
 
-.right-divider {
-  border-right: 1px solid rgba(0, 0, 0, 0.125);
+.input-divider {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
-
-@media(max-width: 992px) {
-  .search-form {
-    border-radius: 20px;
-  }
-
-  .right-divider {
-    border-right: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  }
-}
-

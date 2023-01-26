@@ -9,6 +9,7 @@ export default function initSearchFormHandlers() {
         labelField: 'title',
         searchField: 'title',
         maxItems: 1,
+        load: onCitySearch,
         loadThrottle: 500,
         render: {
             item: (data, escape) => {
@@ -21,7 +22,6 @@ export default function initSearchFormHandlers() {
     searchType.on('change', () => {
         updateTomSelect(tomSelect);
     });
-    updateTomSelect(tomSelect, false);
 }
 
 async function onCitySearch(query, callback) {
@@ -50,13 +50,11 @@ async function onPostalSearch(query, callback) {
     ;
 }
 
-function updateTomSelect(tomSelect: TomSelect, clearOptions = true) {
+function updateTomSelect(tomSelect: TomSelect) {
     let searchByCity = $('#searchType option:selected').val() === 'city';
 
-    if (clearOptions) {
-        tomSelect.clear();
-        tomSelect.clearOptions();
-    }
+    tomSelect.clear();
+    tomSelect.clearOptions();
 
     if (searchByCity) {
         tomSelect.settings.load = onCitySearch;
