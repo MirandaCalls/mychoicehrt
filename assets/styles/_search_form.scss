@@ -9,6 +9,10 @@
   border-top-right-radius: 0;
 }
 
+.ts-wrapper.single .ts-control, .ts-wrapper.single .ts-control input {
+  cursor: text;
+}
+
 .search-form {
   background-color: #fff;
   box-shadow: 0 2px 4px #0000007a;

@@ -3,7 +3,6 @@ import TomSelect from 'tom-select/dist/esm/tom-select';
 
 export default function initSearchFormHandlers() {
     const tomSelect = new TomSelect('#searchText', {
-        create: true,
         delimiter: ';',
         valueField: 'value',
         labelField: 'title',
