@@ -11,6 +11,13 @@
 
 .ts-wrapper.single .ts-control, .ts-wrapper.single .ts-control input {
   cursor: text;
+  color: #212529;
+}
+
+.ts-wrapper.single .ts-control input::placeholder {
+  color: #6c757d;
+  opacity: 1;
+  font-weight: 400;
 }
 
 .search-form {

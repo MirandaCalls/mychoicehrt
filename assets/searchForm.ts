@@ -9,7 +9,7 @@ export default function initSearchFormHandlers() {
         searchField: 'title',
         maxItems: 1,
         load: onCitySearch,
-        loadThrottle: 500,
+        placeholder: 'City, State',
         render: {
             item: (data, escape) => {
                 return '<span>' + escape(data.title) + '</span>';
