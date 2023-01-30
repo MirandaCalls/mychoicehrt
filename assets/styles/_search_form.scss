@@ -26,6 +26,8 @@
 #submit {
   position: relative;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  // Override the default bootstrap button effect and remove the box-shadow animation
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
 #submit:active {
