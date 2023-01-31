@@ -4,15 +4,19 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h2>Contact Us</h2>
+        <div class="card">
+            <div class="card-body">
+                <h2>Contact</h2>
 
-        {% for message in app.flashes('notification') %}
-            <div class="alert alert-success alert-dismissible fade show">
-                {{ message }}
+                {% for message in app.flashes('notification') %}
+                    <div class="alert alert-success alert-dismissible fade show">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {{ form(feedbackForm) }}
             </div>
-        {% endfor %}
-
-        {{ form(feedbackForm) }}
+        </div>
     </div>
 {% endblock %}
 
