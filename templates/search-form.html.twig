@@ -6,15 +6,19 @@ Parameters:
     {{ form_start(searchForm) }}
     <div class="row">
         <div class="pb-1 input-divider">
+            {{ form_label(searchForm.countryCode, null, {'label_attr': {'class': 'visually-hidden'}}) }}
             {{ form_widget(searchForm.countryCode, {'attr': {'class': 'border-0 shadow-0'}}) }}
         </div>
         <div class="py-1 input-divider">
+            {{ form_label(searchForm.searchRadius, null, {'label_attr': {'class': 'visually-hidden'}}) }}
             {{ form_widget(searchForm.searchRadius, {'attr': {'class': 'border-0 shadow-0', 'autocomplete': 'off'}}) }}
         </div>
         <div class="py-1 input-divider">
+            {{ form_label(searchForm.searchType, null, {'label_attr': {'class': 'visually-hidden'}}) }}
             {{ form_widget(searchForm.searchType, {'attr': {'class': 'border-0 shadow-0'}}) }}
         </div>
         <div class="py-1">
+            {{ form_label(searchForm.searchText, null, {'label_attr': {'class': 'visually-hidden'}}) }}
             {{ form_widget(searchForm.searchText, {'attr': {'class': 'border-0 shadow-0', 'autocomplete': 'off'}}) }}
         </div>
         <div class="d-grid">
