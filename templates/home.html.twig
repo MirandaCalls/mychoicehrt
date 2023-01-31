@@ -4,13 +4,13 @@
 
 {% block body %}
     <!-- launchpad image attribution: https://unsplash.com/photos/kFgVd29tzto -->
-    <section class="launchpad d-flex align-items-center">
+    <section class="launchpad py-4 d-flex align-items-center">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 d-flex align-items-center">
                     <h1 class="text-white display-3 text-shadow">Finding transgender healthcare should be easy.</h1>
                 </div>
-                <div class="col-lg-5 pt-5 pt-lg-0">
+                <div class="col-lg-5 mt-5 mt-lg-0">
                     <h2 class="text-white text-shadow">Search providers and clinics</h2>
                     {% include 'search-form.html.twig' with {
                         searchForm: searchForm
