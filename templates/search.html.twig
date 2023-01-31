@@ -26,7 +26,7 @@
                         <h4 class="mt-4">{{ searchResults.totalResults }} {{ resultPluralized }} within {{ searchResults.searchRadius }} {{ milePluralized }} of {{ searchResults.matchedLocation.title }}</h4>
 
                         {% for clinic in searchResults.results %}
-                            <div class="card clinic"
+                            <div class="card clinic shadow-sm"
                                  data-index="{{ loop.index }}"
                                  data-latitude="{{ clinic.latitude }}"
                                  data-longitude="{{ clinic.longitude }}"
@@ -50,7 +50,7 @@
                                         <p class="mb-2">{{ clinic.address }}</p>
                                     {% endif %}
                                     {% if clinic.dataSource == "erinReed" %}
-                                        <span class="badge bg-blue text-black-50">
+                                        <span class="badge bg-blue text-dark-blue" style="color: rgb(0, 77, 124);">
                                             <i class="fa-solid fa-check"></i>
                                             Informed Consent
                                         </span>
@@ -61,7 +61,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="card-footer d-flex flex-column flex-lg-row justify-content-lg-between">
-                                    <small class="text-muted text-uppercase mb-2 mb-lg-0">
+                                    <small class="text-uppercase mb-2 mb-lg-0">
                                         <i class="fa-solid fa-compass"></i>
                                         Directions
                                     </small>
