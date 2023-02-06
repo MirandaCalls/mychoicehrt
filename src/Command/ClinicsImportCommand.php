@@ -5,8 +5,10 @@ namespace App\Command;
 use App\DataSource\DataSourceException;
 use App\DataSource\DataSourceInterface;
 use App\DataSource\ErinReedDataSource;
+use App\DataSource\TransInTheSouthDataSource;
 use App\Entity\Clinic;
 use App\Entity\ImportHash;
+use App\HereMaps\Client as HereClient;
 use App\Repository\ClinicRepository;
 use App\Repository\ImportHashRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -23,19 +25,23 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ClinicsImportCommand extends Command
 {
     private HttpClientInterface $httpClient;
+    private HereClient $hereClient;
     private ClinicRepository $clinics;
     private ImportHashRepository $imports;
 
     private array $dataSources = [
-        ErinReedDataSource::class
+        ErinReedDataSource::class,
+        TransInTheSouthDataSource::class,
     ];
 
     public function __construct(
         HttpClientInterface $httpClient,
+        HereClient $hereClient,
         ClinicRepository $clinics,
         ImportHashRepository $imports,
     ) {
         $this->httpClient = $httpClient;
+        $this->hereClient = $hereClient;
         $this->clinics = $clinics;
         $this->imports = $imports;
         parent::__construct();
@@ -49,7 +55,7 @@ class ClinicsImportCommand extends Command
         $clinicsAddedCount = 0;
         foreach ($this->dataSources as $source) {
             /* @var DataSourceInterface $source */
-            $source = new $source($this->httpClient);
+            $source = new $source($this->httpClient, $this->hereClient);
 
             $io->section($source->getType());
             $io->text('Fetching clinics');
@@ -72,6 +78,7 @@ class ClinicsImportCommand extends Command
                     continue;
                 }
 
+                $source->preImport($new);
                 $this->clinics->save($new);
 
                 $import = new ImportHash();

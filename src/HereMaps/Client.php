@@ -46,4 +46,30 @@ class Client {
 
         return $decoded;
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function geocode(string $address): array
+    {
+        $url = 'https://geocode.search.hereapi.com/v1/geocode?' . http_build_query([
+            'lang' => 'en-US',
+            'q' => $address,
+            'apiKey' => $this->hereApiKey,
+        ]);
+
+        try {
+            $res = $this->httpClient->request('GET', $url);
+            $data = $res->getContent();
+        } catch (\Throwable $e) {
+            throw new \Exception('HTTP request to Here Maps failed: ' . $e->getMessage());
+        }
+
+        $decoded = json_decode($data, true);
+        if ($decoded === false) {
+            throw new \Exception('Failed to decode Here Maps response');
+        }
+
+        return $decoded;
+    }
 }
