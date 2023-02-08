@@ -24,6 +24,7 @@ Parameters:
         <div class="d-grid">
             {{ form_widget(searchForm.submit, {'attr': {'class': 'rounded-pill btn-primary'}}) }}
         </div>
+        {{ form_widget(searchForm.page, {'attr': {'value': '1'}}) }}
     </div>
     {{ form_end(searchForm) }}
 </div>
