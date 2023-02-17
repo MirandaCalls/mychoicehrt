@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:reset',
+    name: 'app:clinics:reset',
     description: 'Dev tool used to reset the application database',
 )]
 class ResetCommand extends Command

@@ -3,6 +3,7 @@
 namespace App\DataSource;
 
 use App\Entity\Clinic;
+use App\HereMaps\Client as HereClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ErinReedDataSource implements DataSourceInterface
@@ -11,8 +12,10 @@ class ErinReedDataSource implements DataSourceInterface
 
     private HttpClientInterface $httpClient;
 
-    public function __construct(HttpClientInterface $httpClient)
-    {
+    public function __construct(
+        HttpClientInterface $httpClient,
+        HereClient $hereClient,
+    ) {
         $this->httpClient = $httpClient;
     }
 
@@ -102,5 +105,10 @@ class ErinReedDataSource implements DataSourceInterface
         ];
         $data = implode( '.', $pieces );
         return md5( $data );
+    }
+
+    public function preImport(Clinic $clinic): void
+    {
+        // left intentionally blank
     }
 }
