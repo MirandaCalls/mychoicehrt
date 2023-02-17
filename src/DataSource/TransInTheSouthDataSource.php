@@ -109,7 +109,8 @@ class TransInTheSouthDataSource implements DataSourceInterface {
                 throw new DataSourceException('Missing clinic attribute in scraped data: name', $this->getType());
             }
 
-            if ($practice = $crawler->filter('.provider--practice-name')->text()) {
+            $practice = $crawler->filter('.provider--practice-name')->text();
+            if ($practice && ($name !== $practice)) {
                 $name .= ' - ' . $practice;
             }
 
