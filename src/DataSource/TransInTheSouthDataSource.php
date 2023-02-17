@@ -30,7 +30,8 @@ class TransInTheSouthDataSource implements DataSourceInterface {
      */
     public function fetchClinics(): array
     {
-        $html = $this->_loadHtml();
+        $tisProvidersId = $this->_scrapeTisProvidersId();
+        $html = $this->_loadSearchResults($tisProvidersId);
         $rawRecords = $this->_scrapeData($html);
 
         $clinics = [];
@@ -47,18 +48,35 @@ class TransInTheSouthDataSource implements DataSourceInterface {
         return $clinics;
     }
 
+    private function _scrapeTisProvidersId(): string
+    {
+        try {
+            $res = $this->httpClient->request('GET', 'https://southernequality.org/resources/transinthesouth/');
+            $html = $res->getContent();
+        } catch (\Throwable) {
+            throw new DataSourceException('HTTP request to fetch search form failed.', $this->getType());
+        }
+
+        if ($html === '') {
+            throw new DataSourceException('Missing web page content in response.', $this->getType());
+        }
+
+        $crawler = new Crawler($html);
+        return $crawler->filter('#filter-tis-providers')->first()->attr('value');
+    }
+
     /**
      * @throws DataSourceException
      */
-    private function _loadHtml(): string
+    private function _loadSearchResults(string $tisProvidersId): string
     {
         try {
             $res = $this->httpClient->request('POST', 'https://southernequality.org/resources/transinthesouth/', [
-                'body' => 'tis-name-search=&states=&services%5B%5D=Informed+Consent&services%5B%5D=Offers+Hormone+Replacement+Therapy+%28HRT%29&filter-tis-providers=0964ae292b&_wp_http_referer=%2Fresources%2Ftransinthesouth%2F&filter_providers=Search',
+                'body' => 'tis-name-search=&states=&services%5B%5D=Informed+Consent&services%5B%5D=Offers+Hormone+Replacement+Therapy+%28HRT%29&filter-tis-providers=' . $tisProvidersId . '&_wp_http_referer=%2Fresources%2Ftransinthesouth%2F&filter_providers=Search',
             ]);
             $html = $res->getContent();
         } catch (\Throwable) {
-            throw new DataSourceException('HTTP request to fetch webpage failed.', $this->getType());
+            throw new DataSourceException('HTTP request to fetch search results failed.', $this->getType());
         }
 
         if ($html === '') {
