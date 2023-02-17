@@ -21,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Oefenweb\DamerauLevenshtein\DamerauLevenshtein as Levenshtein;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class ClinicCrudController extends AbstractCrudController
 {
@@ -76,7 +77,12 @@ class ClinicCrudController extends AbstractCrudController
             ->add(ChoiceFilter::new('published')->setChoices([
                 'No' => false,
                 'Yes' => true
-            ]));
+            ]))
+            ->add(ChoiceFilter::new('dataSource')->canSelectMultiple()->setChoices([
+                'Trans in the South' => 'transInTheSouth',
+                'Erin Reed' => 'erinReed',
+            ]))
+        ;
     }
 
     public function configureFields(string $pageName): iterable
