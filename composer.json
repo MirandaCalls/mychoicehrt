@@ -16,6 +16,7 @@
         "easycorp/easyadmin-bundle": "^4.x-dev",
         "jsor/doctrine-postgis": "^2.1",
         "meteo-concept/hcaptcha-bundle": "^3.3",
+        "mindscape/raygun4php": "^2.3",
         "mjaschen/phpgeo": "^4.2",
         "nyholm/psr7": "^1.5",
         "oefenweb/damerau-levenshtein": "^3.0",
