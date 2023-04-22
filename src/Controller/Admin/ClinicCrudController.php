@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\DataSource\DataSourceInterface;
 use App\Entity\Clinic;
 use App\HereMaps\Client;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Oefenweb\DamerauLevenshtein\DamerauLevenshtein as Levenshtein;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Validator\Constraints\Choice;
 
 class ClinicCrudController extends AbstractCrudController
 {
@@ -83,6 +83,13 @@ class ClinicCrudController extends AbstractCrudController
                 'Erin Reed' => 'erinReed',
             ]))
         ;
+    }
+
+    public function createEntity(string $entityFqcn): Clinic
+    {
+        $clinic = new Clinic();
+        $clinic->setDataSource(DataSourceInterface::DATASOURCE__MANUAL_ENTRY);
+        return $clinic;
     }
 
     public function configureFields(string $pageName): iterable
