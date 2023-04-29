@@ -18,6 +18,7 @@ Encore
     .addEntry('home', './assets/home.ts')
     .addEntry('search', './assets/search.ts')
     .addEntry('feedback', './assets/feedback.ts')
+    .addEntry('dataSources', './assets/dataSources.ts')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
