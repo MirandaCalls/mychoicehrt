@@ -30,12 +30,12 @@ $primary: $color-pink;
 @import '~bootstrap/scss/pagination';
 @import '~bootstrap/scss/tooltip';
 
-a, a:hover, a:visited, .page-link, .page-link:visited, .page-link:hover {
+a, a:visited, .page-link, .page-link:visited, .nav-link {
   color: $blue;
 }
 
-.nav-item a.nav-link {
-  color: black;
+a:hover, .page-link:hover, .nav-link:hover {
+  color: $blue-800;
 }
 
 .page-item.active {
