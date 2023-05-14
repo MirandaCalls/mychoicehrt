@@ -14,9 +14,23 @@
             <img src="{{ asset('images/logo_no_text.png') }}" alt="pill shaped logo with transgender flag colors"/>
             My Choice HRT
         </a>
-        <div class="navbar-nav">
-            <a class="btn btn-primary rounded-pill" href="/feedback">Contact</a>
-        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item d-none d-lg-flex">
+                <a class="nav-item nav-link" href="{{ path('app_search') }}">Search</a>
+            </li>
+            <li class="nav-item py-1 col-auto d-none d-lg-flex">
+                <div class="vr d-flex h-100 mx-2 text-black"></div>
+            </li>
+            <li class="nav-item d-none d-lg-flex">
+                <a class="nav-item nav-link" href="{{ path('app_data_sources') }}">Data Sources</a>
+            </li>
+            <li class="nav-item py-1 col-auto d-none d-lg-flex">
+                <div class="vr d-flex h-100 mx-2 text-black"></div>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-primary rounded-pill mx-2" href="/feedback">Contact</a>
+            </li>
+        </ul>
     </div>
 </nav>
 <div class="main-content">
@@ -28,7 +42,7 @@
 
         <ul class="nav justify-content-end list-unstyled mb-0 d-flex">
             <li class="ms-3">
-                <a class="text-black-50" href="https://git.cyberia.club/alena/mychoicehrt">
+                <a class="text-black-50" target="_blank" href="https://github.com/MirandaCalls/mychoicehrt">
                     <i class="fa-brands fa-git-alt fa-2xl"></i>
                 </a>
             </li>

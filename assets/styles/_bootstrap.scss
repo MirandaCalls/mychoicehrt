@@ -34,6 +34,10 @@ a, a:hover, a:visited, .page-link, .page-link:visited, .page-link:hover {
   color: $blue;
 }
 
+.nav-item a.nav-link {
+  color: black;
+}
+
 .page-item.active {
   .page-link, .page-link:hover, .page-link:visited {
     color: $white;

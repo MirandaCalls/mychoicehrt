@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Data Sources</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h3>Erin Reed</h3>
+                        <p>Website: <a href="https://www.google.com/maps/d/u/0/viewer?mid=1DxyOTw8dI8n96BHFF2JVUMK7bXsRKtzA&ll=41.923729399958034%2C-93.68314094170074&z=8">Erin's Informed Consent HRT Map of the US</a></p>
+                        <p>Erin provides resources for keeping up-to-date on queer news and legislation. She created and maintains a map of informed-consent clinics and providers in the US.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h3>Southern Equality</h3>
+                        <p>Website: <a href="https://southernequality.org/resources/transinthesouth/">Trans in the South</a></p>
+                        <p>A directory of southern trans-affirming healthcare and legal service providers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('dataSources') }}
+{% endblock %}
+
+{% block scripts %}
+    {{ encore_entry_script_tags('dataSources') }}
+{% endblock %}
