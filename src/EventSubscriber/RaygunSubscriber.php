@@ -28,9 +28,9 @@ class RaygunSubscriber implements EventSubscriberInterface
 
     public function onException(ExceptionEvent $event): void
     {
-        if ($this->env !== 'prod') {
-            return;
-        }
+//        if ($this->env !== 'prod') {
+//            return;
+//        }
 
         $exception = $event->getThrowable();
         if ($exception instanceof NotFoundHttpException) {
