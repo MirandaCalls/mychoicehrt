@@ -9,13 +9,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Psr\Log\LoggerInterface;
 
 class RaygunSubscriber implements EventSubscriberInterface
 {
     private string $env;
     private RaygunClient $raygun;
+    private LoggerInterface $logger;
 
-    public function __construct(string $env, string $raygunApiKey)
+    public function __construct(string $env, string $raygunApiKey, LoggerInterface $logger)
     {
         $this->env = $env;
         $httpClient = new GuzzleClient([
@@ -24,6 +26,7 @@ class RaygunSubscriber implements EventSubscriberInterface
         ]);
         $transport = new GuzzleAsync($httpClient);
         $this->raygun = new RaygunClient($transport);
+        $this->logger = $logger;
     }
 
     public function onException(ExceptionEvent $event): void
@@ -31,6 +34,7 @@ class RaygunSubscriber implements EventSubscriberInterface
 //        if ($this->env !== 'prod') {
 //            return;
 //        }
+        $logger->info('here');
 
         $exception = $event->getThrowable();
         if ($exception instanceof NotFoundHttpException) {
