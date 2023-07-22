@@ -13,27 +13,23 @@ use Psr\Log\LoggerInterface;
 
 class RaygunSubscriber implements EventSubscriberInterface
 {
-    private string $env;
     private RaygunClient $raygun;
-    private LoggerInterface $logger;
 
-    public function __construct(string $env, string $raygunApiKey, LoggerInterface $logger)
+    public function __construct(string $raygunApiKey)
     {
-        $this->env = $env;
         $httpClient = new GuzzleClient([
             'base_uri' => 'https://api.raygun.com',
             'headers' => ['X-ApiKey' => $raygunApiKey],
         ]);
         $transport = new GuzzleSync($httpClient);
         $this->raygun = new RaygunClient($transport);
-        $this->logger = $logger;
     }
 
     public function onException(ExceptionEvent $event): void
     {
-//        if ($this->env !== 'prod') {
-//            return;
-//        }
+        if (getenv('APP_ENV') !== 'prod') {
+            return;
+        }
 
         $exception = $event->getThrowable();
         if ($exception instanceof NotFoundHttpException) {
