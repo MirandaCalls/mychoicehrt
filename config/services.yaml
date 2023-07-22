@@ -24,6 +24,10 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\EventSubscriber\RaygunSubscriber:
+        arguments:
+            $env: '%env(APP_ENV)%'
+
     App\EntityListener\ClinicEntityListener:
         tags:
             - { name: 'doctrine.orm.entity_listener', event: 'preRemove', entity: 'App\Entity\Clinic' }
