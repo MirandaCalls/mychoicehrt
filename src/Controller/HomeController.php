@@ -24,11 +24,4 @@ class HomeController extends AbstractController
             'searchForm' => $searchForm,
         ]);
     }
-
-    #[Route('/error', name: 'app_error_test')]
-    public function errorTest(): Response
-    {
-        throw new \Exception('fish!');
-        return new Response('test', Response::HTTP_OK);        
-    }
 }
