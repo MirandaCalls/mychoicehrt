@@ -34,7 +34,7 @@ class RaygunSubscriber implements EventSubscriberInterface
 //        if ($this->env !== 'prod') {
 //            return;
 //        }
-        $logger->info('here');
+        $this->logger->info('here');
 
         $exception = $event->getThrowable();
         if ($exception instanceof NotFoundHttpException) {
