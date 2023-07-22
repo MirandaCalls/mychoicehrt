@@ -12,10 +12,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class RaygunSubscriber implements EventSubscriberInterface
 {
+    private string $env;
     private RaygunClient $raygun;
 
-    public function __construct(string $raygunApiKey)
+    public function __construct(string $env, string $raygunApiKey)
     {
+        $this->env = $env;
         $httpClient = new GuzzleClient([
             'base_uri' => 'https://api.raygun.com',
             'headers' => ['X-ApiKey' => $raygunApiKey],
@@ -26,7 +28,7 @@ class RaygunSubscriber implements EventSubscriberInterface
 
     public function onException(ExceptionEvent $event): void
     {
-        if (getenv('APP_ENV') !== 'prod') {
+        if ($this->env !== 'prod') {
             return;
         }
 
