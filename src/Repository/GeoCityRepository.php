@@ -56,7 +56,7 @@ class GeoCityRepository extends ServiceEntityRepository
                 geo_city.*
             FROM 
                 geo_city,
-                to_tsquery(:queryTerms) query,
+                websearch_to_tsquery(:queryTerms) query,
                 similarity(:searchText, geo_city.name || ' ' || geo_city.state) similarity,
                 to_tsvector('simple', geo_city.alternate_names) otherNames
             WHERE
