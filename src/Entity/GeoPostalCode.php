@@ -149,5 +149,4 @@ class GeoPostalCode
     {
         return $this->postalCode . ' ' . $this->placeName . ', ' . $this->state . ' ' . $this->countryCode;
     }
-
 }

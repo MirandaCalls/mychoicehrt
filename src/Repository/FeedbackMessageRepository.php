@@ -38,5 +38,4 @@ class FeedbackMessageRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
 }

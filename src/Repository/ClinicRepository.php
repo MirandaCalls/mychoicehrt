@@ -112,7 +112,9 @@ class ClinicRepository extends ServiceEntityRepository
     public function findClinicsNearby(Clinic $to): array
     {
         return $this->findClinicsWithinRadius(
-            $to->getLatitude(), $to->getLongitude(), self::NEARBY_CLINICS_RADIUS
+            $to->getLatitude(),
+            $to->getLongitude(),
+            self::NEARBY_CLINICS_RADIUS
         );
     }
 
@@ -143,7 +145,7 @@ class ClinicRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countClinics(bool $recent = false, ?bool $published = null): Int
+    public function countClinics(bool $recent = false, ?bool $published = null): int
     {
         $query = $this->createQueryBuilder('c')
             ->select('count(c.id)');

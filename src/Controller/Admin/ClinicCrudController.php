@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ClinicCrudController extends AbstractCrudController
 {
-
     private AdminUrlGenerator $adminUrlGenerator;
     private Client $hereClient;
     private EntityManagerInterface $entityManager;
@@ -187,7 +186,7 @@ class ClinicCrudController extends AbstractCrudController
                 $clinic->getLatitude(),
                 $clinic->getLongitude(),
             );
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->addFlash('danger', $e->getMessage());
             return $this->redirect($editUrl);
         }
@@ -213,5 +212,4 @@ class ClinicCrudController extends AbstractCrudController
         $this->addFlash('success', 'Successfully added data from Here maps');
         return $this->redirect($editUrl);
     }
-
 }

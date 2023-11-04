@@ -64,7 +64,7 @@ class SearchController extends AbstractController
 
         $geocoder->setCountry($countryCode);
         $results = $geocoder->searchCities($searchText);
-        $results = array_map(function($result) {
+        $results = array_map(function ($result) {
             return [
                 'value' => $result->title,
                 'title' => $result->title,
@@ -81,7 +81,7 @@ class SearchController extends AbstractController
 
         $geocoder->setCountry($countryCode);
         $results = $geocoder->searchPostalCodes($searchText);
-        $results = array_map(function($result) {
+        $results = array_map(function ($result) {
             return [
                 'value' => explode(' ', $result->title)[0],
                 'title' => $result->title,
@@ -89,5 +89,4 @@ class SearchController extends AbstractController
         }, $results);
         return new JsonResponse($results);
     }
-
 }

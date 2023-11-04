@@ -117,5 +117,4 @@ class FeedbackMessage
         $now = new \DateTime();
         $this->submittedOn = $now;
     }
-
 }

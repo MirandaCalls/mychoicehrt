@@ -8,6 +8,6 @@ class SearchResult
         public string $title,
         public float $latitude,
         public float $longitude,
-    ) {}
-
+    ) {
+    }
 }

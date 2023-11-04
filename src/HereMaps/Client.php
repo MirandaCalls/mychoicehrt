@@ -4,8 +4,8 @@ namespace App\HereMaps;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Client {
-
+class Client
+{
     public const METERS_PER_MILE = 1609.344;
 
     private HttpClientInterface $httpClient;

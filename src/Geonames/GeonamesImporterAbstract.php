@@ -28,7 +28,7 @@ abstract class GeonamesImporterAbstract
         $this->configure();
 
         $datasetFilepath = $this->datasetHandler->download($this->datasetUrl, true);
-        $totalCount = $this->datasetHandler->processData($datasetFilepath, function(array $data, int $recordsCount) {
+        $totalCount = $this->datasetHandler->processData($datasetFilepath, function (array $data, int $recordsCount) {
             if ($recordsCount !== 0 && $recordsCount % 500 === 0) {
                 $this->entityManager->flush();
                 $this->entityManager->clear();
@@ -47,5 +47,4 @@ abstract class GeonamesImporterAbstract
     abstract protected function configure(): void;
 
     abstract protected function handleData(array $data): void;
-
 }

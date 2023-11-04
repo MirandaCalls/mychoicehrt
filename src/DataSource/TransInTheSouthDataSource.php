@@ -7,8 +7,8 @@ use App\HereMaps\Client as HereClient;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class TransInTheSouthDataSource implements DataSourceInterface {
-
+class TransInTheSouthDataSource implements DataSourceInterface
+{
     private HttpClientInterface $httpClient;
     private HereClient $hereClient;
 
@@ -94,7 +94,7 @@ class TransInTheSouthDataSource implements DataSourceInterface {
         $rawRecords = [];
 
         $crawler = new Crawler($html);
-        $crawler->filter('.provider')->each(function(Crawler $crawler) use (&$rawRecords) {
+        $crawler->filter('.provider')->each(function (Crawler $crawler) use (&$rawRecords) {
             $services = [];
             foreach ($crawler->filter('.accordion-header') as $service) {
                 $services[] = $service->textContent;

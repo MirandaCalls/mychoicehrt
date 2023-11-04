@@ -139,5 +139,4 @@ class DuplicateLinkCrudController extends AbstractCrudController
         $this->entityManager->flush();
         return $this->redirect($context->getReferrer());
     }
-
 }

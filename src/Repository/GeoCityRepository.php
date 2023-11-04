@@ -46,7 +46,7 @@ class GeoCityRepository extends ServiceEntityRepository
     public function search(string $countryCode, string $searchText): array
     {
         $queryTerms = explode(' ', $searchText);
-        $queryTerms = array_filter($queryTerms, function($val) {
+        $queryTerms = array_filter($queryTerms, function ($val) {
             return $val !== '';
         });
         $queryTerms = implode(' & ', $queryTerms);
@@ -103,9 +103,8 @@ class GeoCityRepository extends ServiceEntityRepository
             ->getResult()
         ;
 
-        return array_map(function($result) {
+        return array_map(function ($result) {
             return $result['countryCode'];
         }, $results);
     }
-
 }

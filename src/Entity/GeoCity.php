@@ -164,5 +164,4 @@ class GeoCity
     {
         return $this->name . ', ' . $this->state . ' ' . $this->countryCode;
     }
-
 }
