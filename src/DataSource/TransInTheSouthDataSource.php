@@ -30,9 +30,9 @@ class TransInTheSouthDataSource implements DataSourceInterface
      */
     public function fetchClinics(): array
     {
-        $tisProvidersId = $this->_scrapeTisProvidersId();
-        $html = $this->_loadSearchResults($tisProvidersId);
-        $rawRecords = $this->_scrapeData($html);
+        $tisProvidersId = $this->scrapeTisProvidersId();
+        $html = $this->loadSearchResults($tisProvidersId);
+        $rawRecords = $this->scrapeData($html);
 
         $clinics = [];
         foreach ($rawRecords as $record) {
@@ -48,7 +48,7 @@ class TransInTheSouthDataSource implements DataSourceInterface
         return $clinics;
     }
 
-    private function _scrapeTisProvidersId(): string
+    private function scrapeTisProvidersId(): string
     {
         try {
             $res = $this->httpClient->request('GET', 'https://southernequality.org/resources/transinthesouth/');
@@ -68,7 +68,7 @@ class TransInTheSouthDataSource implements DataSourceInterface
     /**
      * @throws DataSourceException
      */
-    private function _loadSearchResults(string $tisProvidersId): string
+    private function loadSearchResults(string $tisProvidersId): string
     {
         try {
             $res = $this->httpClient->request('POST', 'https://southernequality.org/resources/transinthesouth/', [
@@ -89,7 +89,7 @@ class TransInTheSouthDataSource implements DataSourceInterface
     /**
      * @throws DataSourceException
      */
-    private function _scrapeData(string $html): array
+    private function scrapeData(string $html): array
     {
         $rawRecords = [];
 
