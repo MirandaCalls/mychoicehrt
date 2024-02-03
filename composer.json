@@ -74,7 +74,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "phpcs": "phpcs"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -86,6 +87,7 @@
         }
     },
     "require-dev": {
+        "squizlabs/php_codesniffer": "*",
         "symfony/maker-bundle": "^1.48",
         "symfony/web-profiler-bundle": "6.2.*"
     }
