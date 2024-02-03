@@ -55,5 +55,4 @@ class AdminRepository extends ServiceEntityRepository implements PasswordUpgrade
 
         $this->save($user, true);
     }
-
 }

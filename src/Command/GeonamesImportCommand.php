@@ -47,5 +47,4 @@ class GeonamesImportCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

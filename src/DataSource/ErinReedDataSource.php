@@ -33,7 +33,7 @@ class ErinReedDataSource implements DataSourceInterface
         $rawRecords = $this->processKml($kml);
 
         $clinics = [];
-        foreach($rawRecords as $record) {
+        foreach ($rawRecords as $record) {
             $coords = explode(',', $record['coords']);
             $clinic = new Clinic();
             $clinic->setName($record['name']);
@@ -54,7 +54,7 @@ class ErinReedDataSource implements DataSourceInterface
     private function loadGoogleMapsKml(): string
     {
         try {
-            $res = $this->httpClient->request( 'GET', self::MAPS_URL );
+            $res = $this->httpClient->request('GET', self::MAPS_URL);
             $data = $res->getContent();
         } catch (\Throwable) {
             throw new DataSourceException('HTTP request to fetch clinics failed.', $this->getType());
@@ -103,8 +103,8 @@ class ErinReedDataSource implements DataSourceInterface
             $clinic->getLatitude(),
             $clinic->getLongitude()
         ];
-        $data = implode( '.', $pieces );
-        return md5( $data );
+        $data = implode('.', $pieces);
+        return md5($data);
     }
 
     public function preImport(Clinic $clinic): void

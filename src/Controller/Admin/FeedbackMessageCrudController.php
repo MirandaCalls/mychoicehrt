@@ -46,5 +46,4 @@ class FeedbackMessageCrudController extends AbstractCrudController
         yield TextareaField::new('messageText');
         yield DateTimeField::new('submittedOn')->setFormTypeOption('disabled', true);
     }
-
 }

@@ -50,9 +50,8 @@ class Geocoder
      */
     private function convertToResults(array $records): array
     {
-        return array_map(function($record) {
+        return array_map(function ($record) {
             return new SearchResult($record->toString(), $record->getLatitude(), $record->getLongitude());
         }, $records);
     }
-
 }

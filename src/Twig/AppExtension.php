@@ -25,5 +25,4 @@ class AppExtension extends AbstractExtension
         $b = new Coordinate($bLat, $bLong);
         return $vincenty->getDistance($a, $b) / self::METERS_PER_MILE;
     }
-
 }

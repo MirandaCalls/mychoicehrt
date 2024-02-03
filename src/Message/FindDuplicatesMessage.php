@@ -11,7 +11,7 @@ class FindDuplicatesMessage
         $this->clinicId = $clinicId;
     }
 
-    public function getClinicId(): Int
+    public function getClinicId(): int
     {
         return $this->clinicId;
     }

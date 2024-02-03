@@ -92,5 +92,4 @@ class SearchEngineParams
     {
         $this->location = $location;
     }
-
 }

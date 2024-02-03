@@ -13,5 +13,4 @@ class DataSourcesController extends AbstractController
     {
         return $this->render('data-sources.html.twig');
     }
-
 }

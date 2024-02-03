@@ -2,8 +2,8 @@
 
 namespace App\DataSource;
 
-class DataSourceException extends \Exception {
-
+class DataSourceException extends \Exception
+{
     private string $type;
 
     public function __construct(string $message, string $type)

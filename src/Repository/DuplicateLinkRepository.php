@@ -86,5 +86,4 @@ class DuplicateLinkRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
-
 }

@@ -11,7 +11,6 @@ use Jsor\Doctrine\PostGIS\Types\PostGISType;
 #[ORM\HasLifecycleCallbacks]
 class Clinic
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -196,5 +195,4 @@ class Clinic
     {
         return $this->name;
     }
-
 }

@@ -51,7 +51,7 @@ class GeonamesDatasetHandler
 
         $handle = fopen($datasetFilepath, 'r');
         $recordCount = 0;
-        while(!feof($handle)) {
+        while (!feof($handle)) {
             $row = fgets($handle);
             if ($row === false) {
                 continue;

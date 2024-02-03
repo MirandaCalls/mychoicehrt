@@ -16,5 +16,6 @@ class SearchEngineResults
         public int $totalResults,
         public int $currentPage,
         public int $totalPages,
-    ) {}
+    ) {
+    }
 }

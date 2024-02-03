@@ -41,10 +41,11 @@ class CitiesImporter extends GeonamesImporterAbstract
     private function loadAdmin1Codes(): void
     {
         $datasetFilepath = $this->datasetHandler->download(
-            self::GEONAMES_EXPORT_URL . '/' . self::ADMIN_1_CODES_DATASET, false
+            self::GEONAMES_EXPORT_URL . '/' . self::ADMIN_1_CODES_DATASET,
+            false
         );
-        $this->datasetHandler->processData($datasetFilepath, function($data) {
-           $this->admin1Codes[$data[0]] = $data[1];
+        $this->datasetHandler->processData($datasetFilepath, function ($data) {
+            $this->admin1Codes[$data[0]] = $data[1];
         });
     }
 

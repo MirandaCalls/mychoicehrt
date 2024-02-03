@@ -67,7 +67,7 @@ class SearchEngine
         }
 
         $page = $params->getPage();
-        $maxPages = ceil($totalResults/self::RECORDS_LIMIT);
+        $maxPages = ceil($totalResults / self::RECORDS_LIMIT);
 
         $page = max(1, $page);
         $page = min($page, $maxPages);
@@ -106,7 +106,7 @@ class SearchEngine
     {
         $radius = 5;
         $count = 0;
-        while($count < self::RECORDS_LIMIT) {
+        while ($count < self::RECORDS_LIMIT) {
             if ($radius >= 500) {
                 break;
             }
